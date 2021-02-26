@@ -5,7 +5,7 @@
 \title{Distance-based Kernel Spatial Weights}
 \usage{
 kernel_weights(
-  geoda_obj,
+  sf_obj,
   bandwidth,
   kernel_method,
   use_kernel_diagonals = FALSE,
@@ -16,7 +16,7 @@ kernel_weights(
 )
 }
 \arguments{
-\item{geoda_obj}{An instance of geoda-class}
+\item{sf_obj}{An sf (simple feature) object}
 
 \item{bandwidth}{A positive numeric value of bandwidth}
 
@@ -39,8 +39,9 @@ An instance of Weight-class
 Create a kernel weights by specifying a bandwidth and a kernel method
 }
 \examples{
+library(sf)
 guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-guerry <- geoda_open(guerry_path)
+guerry <- st_read(guerry_path)
 bandwidth <- min_distthreshold(guerry)
 kernel_w <- kernel_weights(guerry, bandwidth, kernel_method = "uniform")
 summary(kernel_w)

@@ -5,7 +5,7 @@
 \title{Distance-based Spatial Weights}
 \usage{
 distance_weights(
-  geoda_obj,
+  sf_obj,
   dist_thres,
   power = 1,
   is_inverse = FALSE,
@@ -14,7 +14,7 @@ distance_weights(
 )
 }
 \arguments{
-\item{geoda_obj}{An instance of geoda-class}
+\item{sf_obj}{An sf (simple feature) object}
 
 \item{dist_thres}{A positive numeric value of distance threshold}
 
@@ -33,8 +33,9 @@ An instance of Weight-class
 Create a distance-based weights
 }
 \examples{
+library(sf)
 guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-guerry <- geoda_open(guerry_path)
+guerry <- st_read(guerry_path)
 dist_thres <- min_distthreshold(guerry)
 dist_w <- distance_weights(guerry, dist_thres)
 summary(dist_w)

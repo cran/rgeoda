@@ -2,12 +2,13 @@
 % Please edit documentation in R/lisa.R
 \name{local_multijoincount}
 \alias{local_multijoincount}
-\title{Local Multivariate Join Count Statistics}
+\title{(Multivariate) Colocation Local Join Count Statistics}
 \usage{
 local_multijoincount(
   w,
-  data,
+  df,
   permutations = 999,
+  permutation_method = "complete",
   significance_cutoff = 0.05,
   cpu_threads = 6,
   seed = 123456789
@@ -16,29 +17,30 @@ local_multijoincount(
 \arguments{
 \item{w}{An instance of Weight object}
 
-\item{data}{A list of numeric values of selected variables}
+\item{df}{A data frame with selected variables only. E.g. guerry[c("TopCrm", "TopWealth", "TopLit")]}
 
-\item{permutations}{The number of permutations for the LISA computation}
+\item{permutations}{(optional) The number of permutations for the LISA computation}
 
-\item{significance_cutoff}{A cutoff value for significance p-values to filter not-significant clusters}
+\item{permutation_method}{(optional) The permutation method used for the LISA computation. Options are {'complete', 'lookup-table'}. Default is 'complete'.}
 
-\item{cpu_threads}{The number of cpu threads used for parallel LISA computation}
+\item{significance_cutoff}{(optional) A cutoff value for significance p-values to filter not-significant clusters}
 
-\item{seed}{The seed for random number generator}
+\item{cpu_threads}{(optional) The number of cpu threads used for parallel LISA computation}
+
+\item{seed}{(optional) The seed for random number generator}
 }
 \value{
 An instance of LISA-class
 }
 \description{
-The function to apply local Multivariate Join Count statistics
+The function to apply (multivariate) colocation local Join Count statistics
 }
 \examples{
+library(sf)
 guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-guerry <- geoda_open(guerry_path)
+guerry <- st_read(guerry_path)
 queen_w <- queen_weights(guerry)
-guerry_df <- as.data.frame(guerry) # use as data.frame
-bin_data <- guerry_df[c('TopWealth','TopWealth', 'TopLit')]
-lisa <- local_multijoincount(queen_w, bin_data)
+lisa <- local_multijoincount(queen_w,  guerry[c('TopWealth','TopWealth', 'TopLit')])
 clsts <- lisa_clusters(lisa)
 clsts
 }

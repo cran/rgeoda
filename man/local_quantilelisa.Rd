@@ -6,10 +6,11 @@
 \usage{
 local_quantilelisa(
   w,
+  df,
   k,
   q,
-  data,
   permutations = 999,
+  permutation_method = "complete",
   significance_cutoff = 0.05,
   cpu_threads = 6,
   seed = 123456789
@@ -18,19 +19,21 @@ local_quantilelisa(
 \arguments{
 \item{w}{An instance of Weight object}
 
+\item{df}{A data frame with selected variable only. E.g. guerry["Crm_prs"]}
+
 \item{k}{A value indicates the number of quantiles. Value range e.g. [1, 10]}
 
 \item{q}{A value indicates which quantile or interval used in local join count statistics. Value stars from 1.}
 
-\item{data}{A numeric array of selected variable}
+\item{permutations}{(optional) The number of permutations for the LISA computation}
 
-\item{permutations}{The number of permutations for the LISA computation}
+\item{permutation_method}{(optional) The permutation method used for the LISA computation. Options are {'complete', 'lookup-table'}. Default is 'complete'.}
 
-\item{significance_cutoff}{A cutoff value for significance p-values to filter not-significant clusters}
+\item{significance_cutoff}{(optional) A cutoff value for significance p-values to filter not-significant clusters}
 
-\item{cpu_threads}{The number of cpu threads used for parallel LISA computation}
+\item{cpu_threads}{(optional) The number of cpu threads used for parallel LISA computation}
 
-\item{seed}{The seed for random number generator}
+\item{seed}{(optional) The seed for random number generator}
 }
 \value{
 An instance of LISA-class
@@ -39,12 +42,11 @@ An instance of LISA-class
 The function to apply quantile LISA statistics
 }
 \examples{
+library(sf)
 guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-guerry <- geoda_open(guerry_path)
+guerry <- st_read(guerry_path)
 queen_w <- queen_weights(guerry)
-guerry_df <- as.data.frame(guerry) # use as data.frame
-crm_prs <- guerry_df['Crm_prs'][,1]
-lisa <- local_quantilelisa(queen_w, k=4, q=1, crm_prs)
+lisa <- local_quantilelisa(queen_w, guerry["Crm_prs"], k=4, q=1)
 clsts <- lisa_clusters(lisa)
 clsts
 }

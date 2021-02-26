@@ -6,9 +6,10 @@
 // 10/29/2020 init rcpp_weights.cpp
 
 #include <Rcpp.h>
-#include "libgeoda_src/weights/GeodaWeight.h"
-#include "libgeoda_src/gda_weights.h"
-#include "libgeoda_src/libgeoda.h"
+#include "libgeoda/weights/GeodaWeight.h"
+#include "libgeoda/gda_weights.h"
+#include "libgeoda/gda_interface.h"
+#include "libgeoda/libgeoda.h"
 
 using namespace Rcpp;
 
@@ -17,7 +18,7 @@ SEXP p_GeoDaWeight__GetPointer(SEXP xp)
 {
   // return c++ object pointer
   return xp;
-} 
+}
 
 //  [[Rcpp::export]]
 int p_GeoDaWeight__GetNumObs(SEXP xp)
@@ -42,13 +43,13 @@ bool p_GeoDaWeight__IsSymmetric(SEXP xp)
 }
 
 //  [[Rcpp::export]]
-bool p_GeoDaWeight__HasIsolations(SEXP xp)
+bool p_GeoDaWeight__HasIsolates(SEXP xp)
 {
   // grab the object as a XPtr (smart pointer) to GeoDaWeight
   Rcpp::XPtr<GeoDaWeight> ptr(xp);
 
   // invoke the function
-  bool has_iso = ptr->HasIsolations();
+  bool has_iso = ptr->HasIsolates();
 
   return has_iso;
 }
@@ -63,18 +64,6 @@ double p_GeoDaWeight__GetSparsity(SEXP xp)
   double sparsity = ptr->GetSparsity();
 
   return sparsity;
-}
-
-//  [[Rcpp::export]]
-double p_GeoDaWeight__GetDensity(SEXP xp)
-{
-  // grab the object as a XPtr (smart pointer) to GeoDaWeight
-  Rcpp::XPtr<GeoDaWeight> ptr(xp);
-
-  // invoke the function
-  double density = ptr->GetDensity();
-
-  return density;
 }
 
 //  [[Rcpp::export]]
@@ -122,7 +111,7 @@ double p_GeoDaWeight__GetMedianNeighbors(SEXP xp)
 }
 
 //  [[Rcpp::export]]
-double p_GeoDaWeight__SpatialLag(SEXP xp, int obs_idx, SEXP vals)
+Rcpp::DataFrame p_GeoDaWeight__SpatialLag(SEXP xp, SEXP vals)
 {
   // grab the object as a XPtr (smart pointer) to GeoDaWeight
   Rcpp::XPtr<GeoDaWeight> ptr(xp);
@@ -130,9 +119,15 @@ double p_GeoDaWeight__SpatialLag(SEXP xp, int obs_idx, SEXP vals)
   std::vector<double> _vals = as<std::vector<double> >(vals);
 
   // invoke the function
-  double lag = ptr->SpatialLag(obs_idx, _vals);
+  int num_obs = ptr->GetNumObs();
 
-  return lag;
+  Rcpp::NumericVector lags;
+  for (int i=0; i<num_obs; ++i) {
+    lags.push_back(ptr->SpatialLag(i, _vals));
+  }
+
+  Rcpp::DataFrame df = Rcpp::DataFrame::create(Rcpp::Named("Spatial Lag") = lags);
+  return df;
 }
 
 //  [[Rcpp::export]]
@@ -307,3 +302,12 @@ SEXP p_gda_kernel_knn_weights(SEXP xp_geoda, int k, double power, bool is_invers
   Rcpp::XPtr<GeoDaWeight> w_ptr(w, true);
   return w_ptr;
 }
+
+//SEXP p_gda_load_weights(const std::string& weights_path)
+//{
+  // invoke the function
+//  GeoDaWeight* w = gda_load_weights(weights_path);
+
+//  Rcpp::XPtr<GeoDaWeight> w_ptr(w, true);
+//  return w_ptr;
+//}

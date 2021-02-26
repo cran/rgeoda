@@ -6,8 +6,11 @@
 \usage{
 local_multiquantilelisa(
   w,
-  quantile_data,
+  df,
+  k,
+  q,
   permutations = 999,
+  permutation_method = "complete",
   significance_cutoff = 0.05,
   cpu_threads = 6,
   seed = 123456789
@@ -16,15 +19,21 @@ local_multiquantilelisa(
 \arguments{
 \item{w}{An instance of Weight object}
 
-\item{quantile_data}{A list of [k, q, data] for more than one variable. Each variable will be set with: k, indicates the number of quantiles; q, indicates which quantile or interval used in local join count statistics; data, is a numeric array of selected variable}
+\item{df}{A data frame with selected variables only. E.g. guerry[c("TopCrm", "TopWealth", "TopLit")]}
 
-\item{permutations}{The number of permutations for the LISA computation}
+\item{k}{A vector of "k" values indicate the number of quantiles for each variable. Value range e.g. [1, 10]}
 
-\item{significance_cutoff}{A cutoff value for significance p-values to filter not-significant clusters}
+\item{q}{A vector of "q" values indicate which quantile or interval for each variable used in local join count statistics. Value stars from 1.}
 
-\item{cpu_threads}{The number of cpu threads used for parallel LISA computation}
+\item{permutations}{(optional) The number of permutations for the LISA computation}
 
-\item{seed}{The seed for random number generator}
+\item{permutation_method}{(optional) The permutation method used for the LISA computation. Options are {'complete', 'lookup-table'}. Default is 'complete'.}
+
+\item{significance_cutoff}{(optional) A cutoff value for significance p-values to filter not-significant clusters}
+
+\item{cpu_threads}{(optional) The number of cpu threads used for parallel LISA computation}
+
+\item{seed}{(optional) The seed for random number generator}
 }
 \value{
 An instance of LISA-class
@@ -33,14 +42,11 @@ An instance of LISA-class
 The function to apply multivariate quantile LISA statistics
 }
 \examples{
+library(sf)
 guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-guerry <- geoda_open(guerry_path)
+guerry <- st_read(guerry_path)
 queen_w <- queen_weights(guerry)
-guerry_df <- as.data.frame(guerry) # use as data.frame
-crm_prp <- guerry_df['Crm_prp'][,1]
-lit <- guerry_df['Litercy'][,1]
-quantiles <- list(list(4,1,crm_prp), list(4,1, lit))
-lisa <- local_multiquantilelisa(queen_w, quantiles)
+lisa <- local_multiquantilelisa(queen_w, guerry[c("Crm_prp", "Litercy")], k=c(4,4), q=c(1,1))
 clsts <- lisa_clusters(lisa)
 clsts
 }

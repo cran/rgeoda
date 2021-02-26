@@ -5,214 +5,197 @@
 
 using namespace Rcpp;
 
-// p_betweensumofsquare
-double p_betweensumofsquare(Rcpp::List& solution, Rcpp::List& data);
-RcppExport SEXP _rgeoda_p_betweensumofsquare(SEXP solutionSEXP, SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type solution(solutionSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_betweensumofsquare(solution, data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_totalsumofsquare
-double p_totalsumofsquare(Rcpp::List& data);
-RcppExport SEXP _rgeoda_p_totalsumofsquare(SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_totalsumofsquare(data));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_withinsumofsquare
-double p_withinsumofsquare(Rcpp::List& solution, Rcpp::List& data);
-RcppExport SEXP _rgeoda_p_withinsumofsquare(SEXP solutionSEXP, SEXP dataSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type solution(solutionSEXP);
-    Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_withinsumofsquare(solution, data));
-    return rcpp_result_gen;
-END_RCPP
-}
 // p_skater
-Rcpp::List p_skater(int k, SEXP xp_w, Rcpp::List& data, std::string distance_method, NumericVector& bound_vals, double min_bound, int seed, int cpu_threads);
-RcppExport SEXP _rgeoda_p_skater(SEXP kSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP distance_methodSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
+Rcpp::List p_skater(int k, SEXP xp_w, Rcpp::List& data, int n_vars, std::string scale_method, std::string distance_method, NumericVector& bound_vals, double min_bound, int seed, int cpu_threads);
+RcppExport SEXP _rgeoda_p_skater(SEXP kSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type k(kSEXP);
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_skater(k, xp_w, data, distance_method, bound_vals, min_bound, seed, cpu_threads));
+    rcpp_result_gen = Rcpp::wrap(p_skater(k, xp_w, data, n_vars, scale_method, distance_method, bound_vals, min_bound, seed, cpu_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_redcap
-Rcpp::List p_redcap(int k, SEXP xp_w, Rcpp::List& data, std::string redcap_method, std::string distance_method, NumericVector& bound_vals, double min_bound, int seed, int cpu_threads);
-RcppExport SEXP _rgeoda_p_redcap(SEXP kSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP redcap_methodSEXP, SEXP distance_methodSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
+Rcpp::List p_redcap(int k, SEXP xp_w, Rcpp::List& data, int n_vars, std::string redcap_method, std::string scale_method, std::string distance_method, NumericVector& bound_vals, double min_bound, int seed, int cpu_threads);
+RcppExport SEXP _rgeoda_p_redcap(SEXP kSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP redcap_methodSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type k(kSEXP);
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< std::string >::type redcap_method(redcap_methodSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_redcap(k, xp_w, data, redcap_method, distance_method, bound_vals, min_bound, seed, cpu_threads));
+    rcpp_result_gen = Rcpp::wrap(p_redcap(k, xp_w, data, n_vars, redcap_method, scale_method, distance_method, bound_vals, min_bound, seed, cpu_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_schc
-Rcpp::List p_schc(int k, SEXP xp_w, Rcpp::List& data, std::string linkage_method, std::string distance_method, NumericVector& bound_vals, double min_bound);
-RcppExport SEXP _rgeoda_p_schc(SEXP kSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP linkage_methodSEXP, SEXP distance_methodSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP) {
+Rcpp::List p_schc(int k, SEXP xp_w, Rcpp::List& data, int n_vars, std::string linkage_method, std::string scale_method, std::string distance_method, NumericVector& bound_vals, double min_bound);
+RcppExport SEXP _rgeoda_p_schc(SEXP kSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP linkage_methodSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type k(kSEXP);
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< std::string >::type linkage_method(linkage_methodSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_schc(k, xp_w, data, linkage_method, distance_method, bound_vals, min_bound));
+    rcpp_result_gen = Rcpp::wrap(p_schc(k, xp_w, data, n_vars, linkage_method, scale_method, distance_method, bound_vals, min_bound));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_maxp_greedy
-Rcpp::List p_maxp_greedy(SEXP xp_w, Rcpp::List& data, NumericVector& bound_vals, double min_bound, int iterations, NumericVector& init_regions, std::string distance_method, int seed, int cpu_threads);
-RcppExport SEXP _rgeoda_p_maxp_greedy(SEXP xp_wSEXP, SEXP dataSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP iterationsSEXP, SEXP init_regionsSEXP, SEXP distance_methodSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
+Rcpp::List p_maxp_greedy(SEXP xp_w, Rcpp::List& data, int n_vars, NumericVector& bound_vals, double min_bound, int iterations, NumericVector& init_regions, std::string scale_method, std::string distance_method, int seed, int cpu_threads);
+RcppExport SEXP _rgeoda_p_maxp_greedy(SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP iterationsSEXP, SEXP init_regionsSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type init_regions(init_regionsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_maxp_greedy(xp_w, data, bound_vals, min_bound, iterations, init_regions, distance_method, seed, cpu_threads));
+    rcpp_result_gen = Rcpp::wrap(p_maxp_greedy(xp_w, data, n_vars, bound_vals, min_bound, iterations, init_regions, scale_method, distance_method, seed, cpu_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_maxp_sa
-Rcpp::List p_maxp_sa(SEXP xp_w, Rcpp::List& data, NumericVector& bound_vals, double min_bound, int iterations, double cooling_rate, int sa_maxit, NumericVector& init_regions, std::string distance_method, int seed, int cpu_threads);
-RcppExport SEXP _rgeoda_p_maxp_sa(SEXP xp_wSEXP, SEXP dataSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP iterationsSEXP, SEXP cooling_rateSEXP, SEXP sa_maxitSEXP, SEXP init_regionsSEXP, SEXP distance_methodSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
+Rcpp::List p_maxp_sa(SEXP xp_w, Rcpp::List& data, int n_vars, NumericVector& bound_vals, double min_bound, int iterations, double cooling_rate, int sa_maxit, NumericVector& init_regions, std::string scale_method, std::string distance_method, int seed, int cpu_threads);
+RcppExport SEXP _rgeoda_p_maxp_sa(SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP iterationsSEXP, SEXP cooling_rateSEXP, SEXP sa_maxitSEXP, SEXP init_regionsSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< double >::type cooling_rate(cooling_rateSEXP);
     Rcpp::traits::input_parameter< int >::type sa_maxit(sa_maxitSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type init_regions(init_regionsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_maxp_sa(xp_w, data, bound_vals, min_bound, iterations, cooling_rate, sa_maxit, init_regions, distance_method, seed, cpu_threads));
+    rcpp_result_gen = Rcpp::wrap(p_maxp_sa(xp_w, data, n_vars, bound_vals, min_bound, iterations, cooling_rate, sa_maxit, init_regions, scale_method, distance_method, seed, cpu_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_maxp_tabu
-Rcpp::List p_maxp_tabu(SEXP xp_w, Rcpp::List& data, NumericVector& bound_vals, double min_bound, int iterations, int tabu_length, int conv_tabu, NumericVector& init_regions, std::string distance_method, int seed, int cpu_threads);
-RcppExport SEXP _rgeoda_p_maxp_tabu(SEXP xp_wSEXP, SEXP dataSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP iterationsSEXP, SEXP tabu_lengthSEXP, SEXP conv_tabuSEXP, SEXP init_regionsSEXP, SEXP distance_methodSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
+Rcpp::List p_maxp_tabu(SEXP xp_w, Rcpp::List& data, int n_vars, NumericVector& bound_vals, double min_bound, int iterations, int tabu_length, int conv_tabu, NumericVector& init_regions, std::string scale_method, std::string distance_method, int seed, int cpu_threads);
+RcppExport SEXP _rgeoda_p_maxp_tabu(SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP iterationsSEXP, SEXP tabu_lengthSEXP, SEXP conv_tabuSEXP, SEXP init_regionsSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP seedSEXP, SEXP cpu_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type iterations(iterationsSEXP);
     Rcpp::traits::input_parameter< int >::type tabu_length(tabu_lengthSEXP);
     Rcpp::traits::input_parameter< int >::type conv_tabu(conv_tabuSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type init_regions(init_regionsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_maxp_tabu(xp_w, data, bound_vals, min_bound, iterations, tabu_length, conv_tabu, init_regions, distance_method, seed, cpu_threads));
+    rcpp_result_gen = Rcpp::wrap(p_maxp_tabu(xp_w, data, n_vars, bound_vals, min_bound, iterations, tabu_length, conv_tabu, init_regions, scale_method, distance_method, seed, cpu_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_azp_greedy
-Rcpp::List p_azp_greedy(int p, SEXP xp_w, Rcpp::List& data, NumericVector& bound_vals, double min_bound, int inits, NumericVector& init_regions, std::string distance_method, int seed);
-RcppExport SEXP _rgeoda_p_azp_greedy(SEXP pSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP initsSEXP, SEXP init_regionsSEXP, SEXP distance_methodSEXP, SEXP seedSEXP) {
+Rcpp::List p_azp_greedy(int p, SEXP xp_w, Rcpp::List& data, int n_vars, NumericVector& bound_vals, double min_bound, int inits, NumericVector& init_regions, std::string scale_method, std::string distance_method, int seed);
+RcppExport SEXP _rgeoda_p_azp_greedy(SEXP pSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP initsSEXP, SEXP init_regionsSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type p(pSEXP);
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type inits(initsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type init_regions(init_regionsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_azp_greedy(p, xp_w, data, bound_vals, min_bound, inits, init_regions, distance_method, seed));
+    rcpp_result_gen = Rcpp::wrap(p_azp_greedy(p, xp_w, data, n_vars, bound_vals, min_bound, inits, init_regions, scale_method, distance_method, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_azp_sa
-Rcpp::List p_azp_sa(int p, SEXP xp_w, Rcpp::List& data, double cooling_rate, int sa_maxit, NumericVector& bound_vals, double min_bound, int inits, NumericVector& init_regions, std::string distance_method, int seed);
-RcppExport SEXP _rgeoda_p_azp_sa(SEXP pSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP cooling_rateSEXP, SEXP sa_maxitSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP initsSEXP, SEXP init_regionsSEXP, SEXP distance_methodSEXP, SEXP seedSEXP) {
+Rcpp::List p_azp_sa(int p, SEXP xp_w, Rcpp::List& data, int n_vars, double cooling_rate, int sa_maxit, NumericVector& bound_vals, double min_bound, int inits, NumericVector& init_regions, std::string scale_method, std::string distance_method, int seed);
+RcppExport SEXP _rgeoda_p_azp_sa(SEXP pSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP cooling_rateSEXP, SEXP sa_maxitSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP initsSEXP, SEXP init_regionsSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type p(pSEXP);
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< double >::type cooling_rate(cooling_rateSEXP);
     Rcpp::traits::input_parameter< int >::type sa_maxit(sa_maxitSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type inits(initsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type init_regions(init_regionsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_azp_sa(p, xp_w, data, cooling_rate, sa_maxit, bound_vals, min_bound, inits, init_regions, distance_method, seed));
+    rcpp_result_gen = Rcpp::wrap(p_azp_sa(p, xp_w, data, n_vars, cooling_rate, sa_maxit, bound_vals, min_bound, inits, init_regions, scale_method, distance_method, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_azp_tabu
-Rcpp::List p_azp_tabu(int p, SEXP xp_w, Rcpp::List& data, int tabu_length, int conv_tabu, NumericVector& bound_vals, double min_bound, int inits, NumericVector& init_regions, std::string distance_method, int seed);
-RcppExport SEXP _rgeoda_p_azp_tabu(SEXP pSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP tabu_lengthSEXP, SEXP conv_tabuSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP initsSEXP, SEXP init_regionsSEXP, SEXP distance_methodSEXP, SEXP seedSEXP) {
+Rcpp::List p_azp_tabu(int p, SEXP xp_w, Rcpp::List& data, int n_vars, int tabu_length, int conv_tabu, NumericVector& bound_vals, double min_bound, int inits, NumericVector& init_regions, std::string scale_method, std::string distance_method, int seed);
+RcppExport SEXP _rgeoda_p_azp_tabu(SEXP pSEXP, SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP tabu_lengthSEXP, SEXP conv_tabuSEXP, SEXP bound_valsSEXP, SEXP min_boundSEXP, SEXP initsSEXP, SEXP init_regionsSEXP, SEXP scale_methodSEXP, SEXP distance_methodSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type p(pSEXP);
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< int >::type tabu_length(tabu_lengthSEXP);
     Rcpp::traits::input_parameter< int >::type conv_tabu(conv_tabuSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type bound_vals(bound_valsSEXP);
     Rcpp::traits::input_parameter< double >::type min_bound(min_boundSEXP);
     Rcpp::traits::input_parameter< int >::type inits(initsSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type init_regions(init_regionsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type scale_method(scale_methodSEXP);
     Rcpp::traits::input_parameter< std::string >::type distance_method(distance_methodSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_azp_tabu(p, xp_w, data, tabu_length, conv_tabu, bound_vals, min_bound, inits, init_regions, distance_method, seed));
+    rcpp_result_gen = Rcpp::wrap(p_azp_tabu(p, xp_w, data, n_vars, tabu_length, conv_tabu, bound_vals, min_bound, inits, init_regions, scale_method, distance_method, seed));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -350,120 +333,159 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_localmoran
-SEXP p_localmoran(SEXP xp_w, NumericVector data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_localmoran(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_localmoran(SEXP xp_w, NumericVector data, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localmoran(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_localmoran(xp_w, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_localmoran(xp_w, data, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_eb_rate
+DataFrame p_eb_rate(NumericVector& event_data, NumericVector& base_data);
+RcppExport SEXP _rgeoda_p_eb_rate(SEXP event_dataSEXP, SEXP base_dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector& >::type event_data(event_dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type base_data(base_dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_eb_rate(event_data, base_data));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_localmoran_eb
+SEXP p_localmoran_eb(SEXP xp_w, NumericVector& event_data, NumericVector& base_data, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localmoran_eb(SEXP xp_wSEXP, SEXP event_dataSEXP, SEXP base_dataSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type event_data(event_dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type base_data(base_dataSEXP);
+    Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
+    Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
+    Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
+    Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_localmoran_eb(xp_w, event_data, base_data, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_localgeary
-SEXP p_localgeary(SEXP xp_w, NumericVector data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_localgeary(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_localgeary(SEXP xp_w, NumericVector& data, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localgeary(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_localgeary(xp_w, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_localgeary(xp_w, data, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_localmultigeary
-SEXP p_localmultigeary(SEXP xp_w, Rcpp::List& data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_localmultigeary(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_localmultigeary(SEXP xp_w, Rcpp::List& data, int n_vars, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localmultigeary(SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_localmultigeary(xp_w, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_localmultigeary(xp_w, data, n_vars, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_localg
-SEXP p_localg(SEXP xp_w, NumericVector data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_localg(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_localg(SEXP xp_w, NumericVector& data, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localg(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_localg(xp_w, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_localg(xp_w, data, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_localgstar
-SEXP p_localgstar(SEXP xp_w, NumericVector data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_localgstar(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_localgstar(SEXP xp_w, NumericVector& data, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localgstar(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_localgstar(xp_w, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_localgstar(xp_w, data, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_localjoincount
-SEXP p_localjoincount(SEXP xp_w, NumericVector data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_localjoincount(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_localjoincount(SEXP xp_w, NumericVector& data, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localjoincount(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_localjoincount(xp_w, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_localjoincount(xp_w, data, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_localmultijoincount
-SEXP p_localmultijoincount(SEXP xp_w, Rcpp::List& data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_localmultijoincount(SEXP xp_wSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_localmultijoincount(SEXP xp_w, Rcpp::List& data, int n_vars, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_localmultijoincount(SEXP xp_wSEXP, SEXP dataSEXP, SEXP n_varsSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp_w(xp_wSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_localmultijoincount(xp_w, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_localmultijoincount(xp_w, data, n_vars, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_quantilelisa
-SEXP p_quantilelisa(SEXP xp_w, int k, int quantile, NumericVector& data, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_quantilelisa(SEXP xp_wSEXP, SEXP kSEXP, SEXP quantileSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_quantilelisa(SEXP xp_w, int k, int quantile, NumericVector& data, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_quantilelisa(SEXP xp_wSEXP, SEXP kSEXP, SEXP quantileSEXP, SEXP dataSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -472,16 +494,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type quantile(quantileSEXP);
     Rcpp::traits::input_parameter< NumericVector& >::type data(dataSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_quantilelisa(xp_w, k, quantile, data, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_quantilelisa(xp_w, k, quantile, data, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
     return rcpp_result_gen;
 END_RCPP
 }
 // p_multiquantilelisa
-SEXP p_multiquantilelisa(SEXP xp_w, NumericVector& k_s, NumericVector& q_s, Rcpp::List& data_s, int permutations, double significance_cutoff, int cpu_threads, int seed);
-RcppExport SEXP _rgeoda_p_multiquantilelisa(SEXP xp_wSEXP, SEXP k_sSEXP, SEXP q_sSEXP, SEXP data_sSEXP, SEXP permutationsSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
+SEXP p_multiquantilelisa(SEXP xp_w, NumericVector& k_s, NumericVector& q_s, Rcpp::List& data_s, int permutations, std::string permutation_method, double significance_cutoff, int cpu_threads, int seed);
+RcppExport SEXP _rgeoda_p_multiquantilelisa(SEXP xp_wSEXP, SEXP k_sSEXP, SEXP q_sSEXP, SEXP data_sSEXP, SEXP permutationsSEXP, SEXP permutation_methodSEXP, SEXP significance_cutoffSEXP, SEXP cpu_threadsSEXP, SEXP seedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -490,10 +513,31 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector& >::type q_s(q_sSEXP);
     Rcpp::traits::input_parameter< Rcpp::List& >::type data_s(data_sSEXP);
     Rcpp::traits::input_parameter< int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type permutation_method(permutation_methodSEXP);
     Rcpp::traits::input_parameter< double >::type significance_cutoff(significance_cutoffSEXP);
     Rcpp::traits::input_parameter< int >::type cpu_threads(cpu_threadsSEXP);
     Rcpp::traits::input_parameter< int >::type seed(seedSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_multiquantilelisa(xp_w, k_s, q_s, data_s, permutations, significance_cutoff, cpu_threads, seed));
+    rcpp_result_gen = Rcpp::wrap(p_multiquantilelisa(xp_w, k_s, q_s, data_s, permutations, permutation_method, significance_cutoff, cpu_threads, seed));
+    return rcpp_result_gen;
+END_RCPP
+}
+// p_neighbor_match_test
+DataFrame p_neighbor_match_test(SEXP xp_geoda, int k, double power, bool is_inverse, bool is_arc, bool is_mile, Rcpp::List& data_s, int n_vars, const std::string& scale_method, const std::string& dist_type);
+RcppExport SEXP _rgeoda_p_neighbor_match_test(SEXP xp_geodaSEXP, SEXP kSEXP, SEXP powerSEXP, SEXP is_inverseSEXP, SEXP is_arcSEXP, SEXP is_mileSEXP, SEXP data_sSEXP, SEXP n_varsSEXP, SEXP scale_methodSEXP, SEXP dist_typeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp_geoda(xp_geodaSEXP);
+    Rcpp::traits::input_parameter< int >::type k(kSEXP);
+    Rcpp::traits::input_parameter< double >::type power(powerSEXP);
+    Rcpp::traits::input_parameter< bool >::type is_inverse(is_inverseSEXP);
+    Rcpp::traits::input_parameter< bool >::type is_arc(is_arcSEXP);
+    Rcpp::traits::input_parameter< bool >::type is_mile(is_mileSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type data_s(data_sSEXP);
+    Rcpp::traits::input_parameter< int >::type n_vars(n_varsSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type scale_method(scale_methodSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type dist_type(dist_typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_neighbor_match_test(xp_geoda, k, power, is_inverse, is_arc, is_mile, data_s, n_vars, scale_method, dist_type));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -509,17 +553,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_GeoDa__new1
-SEXP p_GeoDa__new1(std::string layer_name, std::string map_type, int num_features, RawVector wkbs, NumericVector wkb_bytes_len);
-RcppExport SEXP _rgeoda_p_GeoDa__new1(SEXP layer_nameSEXP, SEXP map_typeSEXP, SEXP num_featuresSEXP, SEXP wkbsSEXP, SEXP wkb_bytes_lenSEXP) {
+SEXP p_GeoDa__new1(SEXP xp, std::string layer_name, std::string map_type, int num_features, RawVector wkbs, NumericVector wkb_bytes_len);
+RcppExport SEXP _rgeoda_p_GeoDa__new1(SEXP xpSEXP, SEXP layer_nameSEXP, SEXP map_typeSEXP, SEXP num_featuresSEXP, SEXP wkbsSEXP, SEXP wkb_bytes_lenSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
     Rcpp::traits::input_parameter< std::string >::type layer_name(layer_nameSEXP);
     Rcpp::traits::input_parameter< std::string >::type map_type(map_typeSEXP);
     Rcpp::traits::input_parameter< int >::type num_features(num_featuresSEXP);
     Rcpp::traits::input_parameter< RawVector >::type wkbs(wkbsSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type wkb_bytes_len(wkb_bytes_lenSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_GeoDa__new1(layer_name, map_type, num_features, wkbs, wkb_bytes_len));
+    rcpp_result_gen = Rcpp::wrap(p_GeoDa__new1(xp, layer_name, map_type, num_features, wkbs, wkb_bytes_len));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -637,36 +682,71 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// p_gda_demean
-Rcpp::List p_gda_demean(Rcpp::List data);
-RcppExport SEXP _rgeoda_p_gda_demean(SEXP dataSEXP) {
+// p_GeoDaTable__new
+SEXP p_GeoDaTable__new();
+RcppExport SEXP _rgeoda_p_GeoDaTable__new() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_gda_demean(data));
+    rcpp_result_gen = Rcpp::wrap(p_GeoDaTable__new());
     return rcpp_result_gen;
 END_RCPP
 }
-// p_gda_standardize
-Rcpp::List p_gda_standardize(Rcpp::List data);
-RcppExport SEXP _rgeoda_p_gda_standardize(SEXP dataSEXP) {
+// p_GeoDaTable__AddIntColumn
+void p_GeoDaTable__AddIntColumn(SEXP xp, std::string col_name, NumericVector& vals);
+RcppExport SEXP _rgeoda_p_GeoDaTable__AddIntColumn(SEXP xpSEXP, SEXP col_nameSEXP, SEXP valsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
+    Rcpp::traits::input_parameter< std::string >::type col_name(col_nameSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type vals(valsSEXP);
+    p_GeoDaTable__AddIntColumn(xp, col_name, vals);
+    return R_NilValue;
+END_RCPP
+}
+// p_GeoDaTable__AddStringColumn
+void p_GeoDaTable__AddStringColumn(SEXP xp, std::string col_name, StringVector& vals);
+RcppExport SEXP _rgeoda_p_GeoDaTable__AddStringColumn(SEXP xpSEXP, SEXP col_nameSEXP, SEXP valsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
+    Rcpp::traits::input_parameter< std::string >::type col_name(col_nameSEXP);
+    Rcpp::traits::input_parameter< StringVector& >::type vals(valsSEXP);
+    p_GeoDaTable__AddStringColumn(xp, col_name, vals);
+    return R_NilValue;
+END_RCPP
+}
+// p_GeoDaTable__AddRealColumn
+void p_GeoDaTable__AddRealColumn(SEXP xp, std::string col_name, NumericVector& vals);
+RcppExport SEXP _rgeoda_p_GeoDaTable__AddRealColumn(SEXP xpSEXP, SEXP col_nameSEXP, SEXP valsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
+    Rcpp::traits::input_parameter< std::string >::type col_name(col_nameSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type vals(valsSEXP);
+    p_GeoDaTable__AddRealColumn(xp, col_name, vals);
+    return R_NilValue;
+END_RCPP
+}
+// p_GeoDaTable__GetPointer
+SEXP p_GeoDaTable__GetPointer(SEXP xp);
+RcppExport SEXP _rgeoda_p_GeoDaTable__GetPointer(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_gda_standardize(data));
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_GeoDaTable__GetPointer(xp));
     return rcpp_result_gen;
 END_RCPP
 }
-// p_gda_mad
-Rcpp::List p_gda_mad(Rcpp::List data);
-RcppExport SEXP _rgeoda_p_gda_mad(SEXP dataSEXP) {
+// p_gda_isbinary
+bool p_gda_isbinary(Rcpp::NumericVector& values);
+RcppExport SEXP _rgeoda_p_gda_isbinary(SEXP valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type data(dataSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_gda_mad(data));
+    Rcpp::traits::input_parameter< Rcpp::NumericVector& >::type values(valuesSEXP);
+    rcpp_result_gen = Rcpp::wrap(p_gda_isbinary(values));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -771,14 +851,14 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// p_GeoDaWeight__HasIsolations
-bool p_GeoDaWeight__HasIsolations(SEXP xp);
-RcppExport SEXP _rgeoda_p_GeoDaWeight__HasIsolations(SEXP xpSEXP) {
+// p_GeoDaWeight__HasIsolates
+bool p_GeoDaWeight__HasIsolates(SEXP xp);
+RcppExport SEXP _rgeoda_p_GeoDaWeight__HasIsolates(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_GeoDaWeight__HasIsolations(xp));
+    rcpp_result_gen = Rcpp::wrap(p_GeoDaWeight__HasIsolates(xp));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -790,17 +870,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
     rcpp_result_gen = Rcpp::wrap(p_GeoDaWeight__GetSparsity(xp));
-    return rcpp_result_gen;
-END_RCPP
-}
-// p_GeoDaWeight__GetDensity
-double p_GeoDaWeight__GetDensity(SEXP xp);
-RcppExport SEXP _rgeoda_p_GeoDaWeight__GetDensity(SEXP xpSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_GeoDaWeight__GetDensity(xp));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -849,15 +918,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // p_GeoDaWeight__SpatialLag
-double p_GeoDaWeight__SpatialLag(SEXP xp, int obs_idx, SEXP vals);
-RcppExport SEXP _rgeoda_p_GeoDaWeight__SpatialLag(SEXP xpSEXP, SEXP obs_idxSEXP, SEXP valsSEXP) {
+Rcpp::DataFrame p_GeoDaWeight__SpatialLag(SEXP xp, SEXP vals);
+RcppExport SEXP _rgeoda_p_GeoDaWeight__SpatialLag(SEXP xpSEXP, SEXP valsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
-    Rcpp::traits::input_parameter< int >::type obs_idx(obs_idxSEXP);
     Rcpp::traits::input_parameter< SEXP >::type vals(valsSEXP);
-    rcpp_result_gen = Rcpp::wrap(p_GeoDaWeight__SpatialLag(xp, obs_idx, vals));
+    rcpp_result_gen = Rcpp::wrap(p_GeoDaWeight__SpatialLag(xp, vals));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1025,18 +1093,15 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rgeoda_p_betweensumofsquare", (DL_FUNC) &_rgeoda_p_betweensumofsquare, 2},
-    {"_rgeoda_p_totalsumofsquare", (DL_FUNC) &_rgeoda_p_totalsumofsquare, 1},
-    {"_rgeoda_p_withinsumofsquare", (DL_FUNC) &_rgeoda_p_withinsumofsquare, 2},
-    {"_rgeoda_p_skater", (DL_FUNC) &_rgeoda_p_skater, 8},
-    {"_rgeoda_p_redcap", (DL_FUNC) &_rgeoda_p_redcap, 9},
-    {"_rgeoda_p_schc", (DL_FUNC) &_rgeoda_p_schc, 7},
-    {"_rgeoda_p_maxp_greedy", (DL_FUNC) &_rgeoda_p_maxp_greedy, 9},
-    {"_rgeoda_p_maxp_sa", (DL_FUNC) &_rgeoda_p_maxp_sa, 11},
-    {"_rgeoda_p_maxp_tabu", (DL_FUNC) &_rgeoda_p_maxp_tabu, 11},
-    {"_rgeoda_p_azp_greedy", (DL_FUNC) &_rgeoda_p_azp_greedy, 9},
-    {"_rgeoda_p_azp_sa", (DL_FUNC) &_rgeoda_p_azp_sa, 11},
-    {"_rgeoda_p_azp_tabu", (DL_FUNC) &_rgeoda_p_azp_tabu, 11},
+    {"_rgeoda_p_skater", (DL_FUNC) &_rgeoda_p_skater, 10},
+    {"_rgeoda_p_redcap", (DL_FUNC) &_rgeoda_p_redcap, 11},
+    {"_rgeoda_p_schc", (DL_FUNC) &_rgeoda_p_schc, 9},
+    {"_rgeoda_p_maxp_greedy", (DL_FUNC) &_rgeoda_p_maxp_greedy, 11},
+    {"_rgeoda_p_maxp_sa", (DL_FUNC) &_rgeoda_p_maxp_sa, 13},
+    {"_rgeoda_p_maxp_tabu", (DL_FUNC) &_rgeoda_p_maxp_tabu, 13},
+    {"_rgeoda_p_azp_greedy", (DL_FUNC) &_rgeoda_p_azp_greedy, 11},
+    {"_rgeoda_p_azp_sa", (DL_FUNC) &_rgeoda_p_azp_sa, 13},
+    {"_rgeoda_p_azp_tabu", (DL_FUNC) &_rgeoda_p_azp_tabu, 13},
     {"_rgeoda_p_LISA__Run", (DL_FUNC) &_rgeoda_p_LISA__Run, 1},
     {"_rgeoda_p_LISA__SetNumPermutations", (DL_FUNC) &_rgeoda_p_LISA__SetNumPermutations, 2},
     {"_rgeoda_p_LISA__SetNumThreads", (DL_FUNC) &_rgeoda_p_LISA__SetNumThreads, 2},
@@ -1049,17 +1114,20 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rgeoda_p_LISA__GetColors", (DL_FUNC) &_rgeoda_p_LISA__GetColors, 1},
     {"_rgeoda_p_LISA__GetBO", (DL_FUNC) &_rgeoda_p_LISA__GetBO, 2},
     {"_rgeoda_p_LISA__GetFDR", (DL_FUNC) &_rgeoda_p_LISA__GetFDR, 2},
-    {"_rgeoda_p_localmoran", (DL_FUNC) &_rgeoda_p_localmoran, 6},
-    {"_rgeoda_p_localgeary", (DL_FUNC) &_rgeoda_p_localgeary, 6},
-    {"_rgeoda_p_localmultigeary", (DL_FUNC) &_rgeoda_p_localmultigeary, 6},
-    {"_rgeoda_p_localg", (DL_FUNC) &_rgeoda_p_localg, 6},
-    {"_rgeoda_p_localgstar", (DL_FUNC) &_rgeoda_p_localgstar, 6},
-    {"_rgeoda_p_localjoincount", (DL_FUNC) &_rgeoda_p_localjoincount, 6},
-    {"_rgeoda_p_localmultijoincount", (DL_FUNC) &_rgeoda_p_localmultijoincount, 6},
-    {"_rgeoda_p_quantilelisa", (DL_FUNC) &_rgeoda_p_quantilelisa, 8},
-    {"_rgeoda_p_multiquantilelisa", (DL_FUNC) &_rgeoda_p_multiquantilelisa, 8},
+    {"_rgeoda_p_localmoran", (DL_FUNC) &_rgeoda_p_localmoran, 7},
+    {"_rgeoda_p_eb_rate", (DL_FUNC) &_rgeoda_p_eb_rate, 2},
+    {"_rgeoda_p_localmoran_eb", (DL_FUNC) &_rgeoda_p_localmoran_eb, 8},
+    {"_rgeoda_p_localgeary", (DL_FUNC) &_rgeoda_p_localgeary, 7},
+    {"_rgeoda_p_localmultigeary", (DL_FUNC) &_rgeoda_p_localmultigeary, 8},
+    {"_rgeoda_p_localg", (DL_FUNC) &_rgeoda_p_localg, 7},
+    {"_rgeoda_p_localgstar", (DL_FUNC) &_rgeoda_p_localgstar, 7},
+    {"_rgeoda_p_localjoincount", (DL_FUNC) &_rgeoda_p_localjoincount, 7},
+    {"_rgeoda_p_localmultijoincount", (DL_FUNC) &_rgeoda_p_localmultijoincount, 8},
+    {"_rgeoda_p_quantilelisa", (DL_FUNC) &_rgeoda_p_quantilelisa, 9},
+    {"_rgeoda_p_multiquantilelisa", (DL_FUNC) &_rgeoda_p_multiquantilelisa, 9},
+    {"_rgeoda_p_neighbor_match_test", (DL_FUNC) &_rgeoda_p_neighbor_match_test, 10},
     {"_rgeoda_p_GeoDa__new", (DL_FUNC) &_rgeoda_p_GeoDa__new, 1},
-    {"_rgeoda_p_GeoDa__new1", (DL_FUNC) &_rgeoda_p_GeoDa__new1, 5},
+    {"_rgeoda_p_GeoDa__new1", (DL_FUNC) &_rgeoda_p_GeoDa__new1, 6},
     {"_rgeoda_p_GeoDa__GetNumObs", (DL_FUNC) &_rgeoda_p_GeoDa__GetNumObs, 1},
     {"_rgeoda_p_GeoDa__GetNumCols", (DL_FUNC) &_rgeoda_p_GeoDa__GetNumCols, 1},
     {"_rgeoda_p_GeoDa__GetMapType", (DL_FUNC) &_rgeoda_p_GeoDa__GetMapType, 1},
@@ -1070,9 +1138,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rgeoda_p_GeoDa__GetStringCol", (DL_FUNC) &_rgeoda_p_GeoDa__GetStringCol, 2},
     {"_rgeoda_p_GeoDa__GetNullValues", (DL_FUNC) &_rgeoda_p_GeoDa__GetNullValues, 2},
     {"_rgeoda_p_GeoDa__GetPointer", (DL_FUNC) &_rgeoda_p_GeoDa__GetPointer, 1},
-    {"_rgeoda_p_gda_demean", (DL_FUNC) &_rgeoda_p_gda_demean, 1},
-    {"_rgeoda_p_gda_standardize", (DL_FUNC) &_rgeoda_p_gda_standardize, 1},
-    {"_rgeoda_p_gda_mad", (DL_FUNC) &_rgeoda_p_gda_mad, 1},
+    {"_rgeoda_p_GeoDaTable__new", (DL_FUNC) &_rgeoda_p_GeoDaTable__new, 0},
+    {"_rgeoda_p_GeoDaTable__AddIntColumn", (DL_FUNC) &_rgeoda_p_GeoDaTable__AddIntColumn, 3},
+    {"_rgeoda_p_GeoDaTable__AddStringColumn", (DL_FUNC) &_rgeoda_p_GeoDaTable__AddStringColumn, 3},
+    {"_rgeoda_p_GeoDaTable__AddRealColumn", (DL_FUNC) &_rgeoda_p_GeoDaTable__AddRealColumn, 3},
+    {"_rgeoda_p_GeoDaTable__GetPointer", (DL_FUNC) &_rgeoda_p_GeoDaTable__GetPointer, 1},
+    {"_rgeoda_p_gda_isbinary", (DL_FUNC) &_rgeoda_p_gda_isbinary, 1},
     {"_rgeoda_p_naturalbreaks", (DL_FUNC) &_rgeoda_p_naturalbreaks, 2},
     {"_rgeoda_p_quantilebreaks", (DL_FUNC) &_rgeoda_p_quantilebreaks, 2},
     {"_rgeoda_p_hinge15breaks", (DL_FUNC) &_rgeoda_p_hinge15breaks, 1},
@@ -1082,14 +1153,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rgeoda_p_GeoDaWeight__GetPointer", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetPointer, 1},
     {"_rgeoda_p_GeoDaWeight__GetNumObs", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetNumObs, 1},
     {"_rgeoda_p_GeoDaWeight__IsSymmetric", (DL_FUNC) &_rgeoda_p_GeoDaWeight__IsSymmetric, 1},
-    {"_rgeoda_p_GeoDaWeight__HasIsolations", (DL_FUNC) &_rgeoda_p_GeoDaWeight__HasIsolations, 1},
+    {"_rgeoda_p_GeoDaWeight__HasIsolates", (DL_FUNC) &_rgeoda_p_GeoDaWeight__HasIsolates, 1},
     {"_rgeoda_p_GeoDaWeight__GetSparsity", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetSparsity, 1},
-    {"_rgeoda_p_GeoDaWeight__GetDensity", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetDensity, 1},
     {"_rgeoda_p_GeoDaWeight__GetMinNeighbors", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetMinNeighbors, 1},
     {"_rgeoda_p_GeoDaWeight__GetMaxNeighbors", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetMaxNeighbors, 1},
     {"_rgeoda_p_GeoDaWeight__GetMeanNeighbors", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetMeanNeighbors, 1},
     {"_rgeoda_p_GeoDaWeight__GetMedianNeighbors", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetMedianNeighbors, 1},
-    {"_rgeoda_p_GeoDaWeight__SpatialLag", (DL_FUNC) &_rgeoda_p_GeoDaWeight__SpatialLag, 3},
+    {"_rgeoda_p_GeoDaWeight__SpatialLag", (DL_FUNC) &_rgeoda_p_GeoDaWeight__SpatialLag, 2},
     {"_rgeoda_p_GeoDaWeight__GetNeighborSize", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetNeighborSize, 2},
     {"_rgeoda_p_GeoDaWeight__SaveToFile", (DL_FUNC) &_rgeoda_p_GeoDaWeight__SaveToFile, 5},
     {"_rgeoda_p_GeoDaWeight__GetNeighbors", (DL_FUNC) &_rgeoda_p_GeoDaWeight__GetNeighbors, 2},

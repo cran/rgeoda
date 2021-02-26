@@ -4,26 +4,24 @@
 #' @field gda_w An object of p_GeoDaWeight-class
 #' @field is_symmetric If weights matrix is symmetric
 #' @field sparsity Sparsity of weights matrix
-#' @field density Density of weights matrix
 #' @field min_neighbors Minimum number of neighbors
 #' @field max_neighbors Maximum number of neighbors
 #' @field num_obs Number of observations
 #' @field mean_neighbors Mean number of neighbors
 #' @field median_neighbors Median number of neighbors
-#' @field has_isolations If the weights matrix has any isolations
+#' @field has_isolates If the weights matrix has any isolates
 #' @export
 Weight <- setRefClass("Weight",
   fields = list(
     gda_w = "p_GeoDaWeight",
     is_symmetric = "logical",
     sparsity = "numeric",
-    density = "numeric",
     min_neighbors = "integer",
     max_neighbors = "integer",
     num_obs = "integer",
     mean_neighbors = "numeric",
     median_neighbors = "numeric",
-    has_isolations = "logical"
+    has_isolates= "logical"
   ),
   methods = list(
     initialize = function(o_gda_w) {
@@ -31,29 +29,24 @@ Weight <- setRefClass("Weight",
       .self$gda_w = o_gda_w
       .self$is_symmetric = gda_w$IsSymmetric()
       .self$sparsity = gda_w$GetSparsity()
-      .self$density = gda_w$GetDensity()
       .self$min_neighbors = gda_w$GetMinNeighbors()
       .self$max_neighbors = gda_w$GetMaxNeighbors()
       .self$mean_neighbors = gda_w$GetMeanNeighbors()
       .self$median_neighbors = gda_w$GetMedianNeighbors()
       .self$num_obs = gda_w$GetNumObs()
-      .self$has_isolations = gda_w$HasIsolations()
+      .self$has_isolates = gda_w$HasIsolates()
     },
     IsSymmetric = function() {
       "Check if weights matrix is symmetric"
       return(gda_w$IsSymmetric())
     },
-    HasIsolations = function() {
+    HasIsolates = function() {
       "Check if weights matrix has isolates, or if any observation has no neighbors"
-      return(gda_w$HasIsolations())
+      return(gda_w$HasIsolates())
     },
     GetSparsity = function() {
       "Get sparsity computed from weights matrix"
       return(gda_w$GetSparsity())
-    },
-    GetDensity = function() {
-      "Get density computed from weights matrix"
-      return (gda_w$GetDensity())
     },
     GetNeighborSize = function(idx) {
       return (gda_w$GetNeighborSize(idx))
@@ -66,9 +59,9 @@ Weight <- setRefClass("Weight",
       "Get weights values of neighbors for idx-th observation, idx starts from 0"
       return (gda_w$GetNeighborWeights(idx))
     },
-    SpatialLag = function(idx, values) {
-      "Compute spatial lag values of idx-th observation, idx starts from 0"
-      return (gda_w$SpatialLag(idx,values))
+    SpatialLag = function(values) {
+      "Compute spatial lag values for values of selected variable"
+      return (gda_w$SpatialLag(values))
     },
     SaveToFile = function(out_path, layer_name, id_name, id_values) {
       "Save current spatial weights to a file.\\cr \\cr
@@ -105,22 +98,20 @@ summary.Weight <- function(object, ...) {
   name <- c("number of observations:",
             "is symmetric: ",
             "sparsity:",
-            "density:",
             "# min neighbors:",
             "# max neighbors:",
             "# mean neighbors:",
             "# median neighbors:",
-            "has isolations:"
+            "has isolates:"
             )
-  value <- c( gda_w$num_obs,
-              gda_w$is_symmetric,
-              gda_w$sparsity,
-              gda_w$density,
-              gda_w$min_neighbors,
-              gda_w$max_neighbors,
-              gda_w$mean_neighbors,
-              gda_w$median_neighbors,
-              gda_w$has_isolations)
+  value <- c( as.character(gda_w$num_obs),
+              as.character(gda_w$is_symmetric),
+              as.character(gda_w$sparsity),
+              as.character(gda_w$min_neighbors),
+              as.character(gda_w$max_neighbors),
+              as.character(gda_w$mean_neighbors),
+              as.character(gda_w$median_neighbors),
+              as.character(gda_w$has_isolates))
 
   output <- data.frame(name, value)
   format(output)
@@ -157,12 +148,12 @@ is_symmetric <- function(gda_w) {
 #' }
 #' @export
 has_isolates <- function(gda_w) {
-  return(gda_w$HasIsolations())
+  return(gda_w$HasIsolates())
 }
 
 #################################################################
 #' @title Sparsity of Spatial Weights
-#' @description Get sparsity computed from weights matrix
+#' @description Get sparsity (% Non-zero) computed from weights matrix
 #' @param gda_w A Weight object
 #' @return A numeric value of spatial weights sparsity
 #' @examples
@@ -175,23 +166,6 @@ has_isolates <- function(gda_w) {
 #' @export
 weights_sparsity <- function(gda_w) {
   return(gda_w$sparsity)
-}
-
-#################################################################
-#' @title Density of Spatial Weights
-#' @description Get density computed from weights matrix
-#' @param gda_w A Weight object
-#' @return A numeric value of spatial weights density
-#' @examples
-#' \dontrun{
-#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-#' guerry <- geoda_open(guerry_path)
-#' queen_w <- queen_weights(guerry)
-#' weights_density(queen_w)
-#' }
-#' @export
-weights_density <- function(gda_w) {
-  return (gda_w$density)
 }
 
 #################################################################
@@ -224,68 +198,308 @@ get_neighbors <- function(gda_w, idx) {
 #' @title Spatial Lag
 #' @description Compute the spatial lag for idx-th observation using selected variable and current weights matrix
 #' @param gda_w A Weight object
-#' @param idx A value indicates idx-th observation, idx start from 1
-#' @param values A vector of values
-#' @return A numeric value of the spatial lag for idx-th observation
+#' @param df A data frame with selected variable only. E.g. guerry["Crm_prs"]
+#' @return A data.frame with one column "Spatial Lag"
+#' @examples
+#' \dontrun{
+#' library(sf)
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- st_read(guerry_path)
+#' queen_w <- queen_weights(guerry)
+#' crm_lag <- spatial_lag(queen_w, guerry["Crm_prs"])
+#' crm_lag
+#' }
+#' @export
+spatial_lag <- function(gda_w, df) {
+  if (inherits(df, "data.frame") == FALSE) {
+    stop("The input data needs to be a data.frame.")
+  }
+
+  data <- df[[1]]
+  return(gda_w$SpatialLag(data))
+}
+
+#################################################################
+#' @title Maximum Neighbors of Spatial Weights
+#' @description Get the number of maximum neighbors of spatial weights
+#' @param gda_w A Weight object
+#' @return The number of maximum neighbors of spatial weights
 #' @examples
 #' \dontrun{
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
 #' guerry <- geoda_open(guerry_path)
 #' queen_w <- queen_weights(guerry)
-#' lag0 <- spatial_lag(queen_w, idx = 1, values = crm_prs)
-#' cat("\nSpatial lag of the 1-st observation of variable crm_prs is:", lag0)
+#' max_neighbors(queen_w)
 #' }
 #' @export
-spatial_lag <- function(gda_w, idx, values) {
-  idx <- idx - 1
-  return(gda_w$SpatialLag(idx, values))
+max_neighbors <- function(gda_w) {
+  return(gda_w$max_neighbors)
+}
+
+#################################################################
+#' @title Minimum Neighbors of Spatial Weights
+#' @description Get the number of minimum neighbors of spatial weights
+#' @param gda_w A Weight object
+#' @return The number of minimum neighbors of spatial weights
+#' @examples
+#' \dontrun{
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- geoda_open(guerry_path)
+#' queen_w <- queen_weights(guerry)
+#' min_neighbors(queen_w)
+#' }
+#' @export
+min_neighbors <- function(gda_w) {
+  return(gda_w$min_neighbors)
+}
+
+#################################################################
+#' @title Mean Neighbors of Spatial Weights
+#' @description Get the number of mean neighbors of spatial weights
+#' @param gda_w A Weight object
+#' @return The number of mean neighbors of spatial weights
+#' @examples
+#' \dontrun{
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- geoda_open(guerry_path)
+#' queen_w <- queen_weights(guerry)
+#' mean_neighbors(queen_w)
+#' }
+#' @export
+mean_neighbors <- function(gda_w) {
+  return(gda_w$mean_neighbors)
+}
+
+#################################################################
+#' @title Median Neighbors of Spatial Weights
+#' @description Get the number of median neighbors of spatial weights
+#' @param gda_w A Weight object
+#' @return The number of median neighbors of spatial weights
+#' @examples
+#' \dontrun{
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- geoda_open(guerry_path)
+#' queen_w <- queen_weights(guerry)
+#' median_neighbors(queen_w)
+#' }
+#' @export
+median_neighbors <- function(gda_w) {
+  return(gda_w$median_neighbors)
 }
 
 #################################################################
 #' @title Save Spatial Weights
-#' @description Save current spatial weights to a file
+#' @description Save spatial weights to a file
 #' @param gda_w A Weight object
 #' @param out_path The path of an output weights file
-#' @param layer_name The name of the layer of input dataset
-#' @param id_name The id name (or field name), which is an associated column contains unique values, that makes sure that the weights are connected to the correct observations in the data table.
-#' @param id_values The tuple of values of selected id_name (column or field)
+#' @param id_variable The id variable (a data.frame) that defines the unique value of each observation when saving a weights file
+#' @param layer_name (optional) The name of the layer of input dataset
 #' @return A boolean value indicates if save successfully or failed
 #' @examples
 #' \dontrun{
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-#' guerry <- geoda_open(guerry_path)
+#' guerry <- st_read(guerry_path)
 #' queen_w <- queen_weights(guerry)
-#' save_weights(rook_w, out_path = '/Users/xun/Downloads/Guerry_r.gal',
-#'             layer_name = 'Guerry',
-#'             id_name = 'CODE_DE',
-#'             id_values = as.integer(guerry_df['CODE_DE'][,1]))
+#' save_weights(quen_w, guerry_df['CODE_DE'], out_path = '/Users/xun/Downloads/Guerry_r.gal')
 #' }
 #' @export
-save_weights <- function(gda_w, out_path, layer_name, id_name, id_values) {
+save_weights <- function(gda_w, id_variable, out_path, layer_name="") {
+  if (inherits(id_variable, "data.frame") == FALSE) {
+    stop("The id_variable needs to be a data.frame.")
+  }
+  id_values <- id_variable[[1]]
+  id_name <- names(id_variable)[[1]]
+
+  if (id_name == "") {
+    stop("The id_variable doesn't have a column name.")
+  }
+
   return(gda_w$SaveToFile(out_path, layer_name, id_name, id_values))
+}
+
+#load_weights <- function(weights_path) {
+#  if (weights_path == "") {
+#    stop("The weights_path can not be empty.")
+#  }
+#
+#  w <- p_gda_load_weights(weights_path)
+#
+#  return(Weight$new(p_GeoDaWeight(w)))
+#}
+
+#################################################################
+#' @title Queen Contiguity Spatial Weights
+#' @description Create a Queen contiguity weights with options of "order", "include lower order" and "precision threshold"
+#' @param sf_obj An sf (simple feature) object
+#' @param order  (Optional) Order of contiguity
+#' @param include_lower_order (Optional)  Whether or not the lower order neighbors should be included in the weights structure
+#' @param precision_threshold  (Optional) The precision of the underlying shape file is insufficient to allow for an exact match of coordinates to determine which polygons are neighbors
+#' @return An instance of Weight-class
+#' @examples
+#' library(sf)
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- st_read(guerry_path)
+#' queen_w <- queen_weights(guerry)
+#' summary(queen_w)
+#' @export
+queen_weights <- function(sf_obj, order=1, include_lower_order = FALSE, precision_threshold = 0) {
+  geoda_obj <- getGeoDaObj(sf_obj)
+  return (gda_queen_weights(geoda_obj, order, include_lower_order, precision_threshold))
+}
+
+
+#################################################################
+#' @title Rook Contiguity Spatial Weights
+#' @description Create a Rook contiguity weights with options of "order", "include lower order" and "precision threshold"
+#' @param sf_obj An sf (simple feature) object
+#' @param order  (Optional) Order of contiguity
+#' @param include_lower_order (Optional)  Whether or not the lower order neighbors should be included in the weights structure
+#' @param precision_threshold  (Optional) The precision of the underlying shape file is insufficient to allow for an exact match of coordinates to determine which polygons are neighbors
+#' @return An instance of Weight-class
+#' @examples
+#' library(sf)
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- st_read(guerry_path)
+#' rook_w <- rook_weights(guerry)
+#' summary(rook_w)
+#' @export
+rook_weights <- function(sf_obj, order = 1, include_lower_order = FALSE, precision_threshold = 0) {
+  geoda_obj <- getGeoDaObj(sf_obj)
+  return (gda_rook_weights(geoda_obj, order, include_lower_order, precision_threshold))
 }
 
 #################################################################
 #' @title Minimum Distance Threshold for Distance-based Weights
 #' @description Get minimum threshold of distance that makes sure each observation has at least one neighbor
-#' @param geoda_obj An object of [geoda] class
+#' @param sf_obj An sf (simple feature) object
 #' @param is_arc (optional) FALSE (default) or TRUE, compute arc distance between two observations
-#' @param is_mile (optional) TRUE (default) or FALSE, convert distance unit from mile to km.
+#' @param is_mile (optional) TRUE (default) or FALSE, if 'is_arc' option is TRUE, then 'is_mile' will set distance unit to 'mile' or 'km'.
 #' @return A numeric value of minimum threshold of distance
 #' @examples
 #' \dontrun{
+#' library(sf)
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
-#' guerry <- geoda_open(guerry_path)
+#' guerry <- st_read(guerry_path)
 #' dist_thres <- min_distthreshold(guerry)
 #' dist_thres
 #' }
 #' @export
-min_distthreshold <- function(geoda_obj, is_arc = FALSE, is_mile = TRUE) {
-  return (p_gda_min_distthreshold(geoda_obj$GetPointer(), is_arc, is_mile))
+min_distthreshold <- function(sf_obj, is_arc = FALSE, is_mile = TRUE) {
+  geoda_obj <- getGeoDaObj(sf_obj)
+  return (gda_min_distthreshold(geoda_obj, is_arc, is_mile))
 }
 
 #################################################################
-#' @title Queen Contiguity Spatial Weights
+#' @title Distance-based Spatial Weights
+#' @description Create a distance-based weights
+#' @keywords distance weights
+#' @param sf_obj An sf (simple feature) object
+#' @param dist_thres A positive numeric value of distance threshold
+#' @param is_inverse (optional) FALSE (default) or TRUE, apply inverse on distance value
+#' @param power (optional) The power (or exponent) of a number indicates how many times to use the number in a multiplication.
+#' @param is_arc (optional) FALSE (default) or TRUE, compute arc distance between two observations
+#' @param is_mile (optional) TRUE (default) or FALSE, convert distance unit from mile to km.
+#' @return An instance of Weight-class
+#' @examples
+#' library(sf)
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- st_read(guerry_path)
+#' dist_thres <- min_distthreshold(guerry)
+#' dist_w <- distance_weights(guerry, dist_thres)
+#' summary(dist_w)
+#' @export
+distance_weights <- function(sf_obj, dist_thres, power = 1.0, is_inverse = FALSE, is_arc = FALSE, is_mile=TRUE){
+  geoda_obj <- getGeoDaObj(sf_obj)
+  return (gda_distance_weights(geoda_obj, dist_thres, power, is_inverse, is_arc, is_mile))
+}
+
+#################################################################
+#' @title Distance-based Kernel Spatial Weights
+#' @description Create a kernel weights by specifying a bandwidth and a kernel method
+#' @keywords kernel weights
+#' @param sf_obj An sf (simple feature) object
+#' @param bandwidth A positive numeric value of bandwidth
+#' @param kernel_method a string value, which has to be one of 'triangular', 'uniform', 'epanechnikov', 'quartic', 'gaussian'
+#' @param use_kernel_diagonals (optional) FALSE (default) or TRUE, apply kernel on the diagonal of weights matrix
+#' @param is_inverse (optional) FALSE (default) or TRUE, apply inverse on distance value
+#' @param power (optional) The power (or exponent) of a number says how many times to use the number in a multiplication.
+#' @param is_arc (optional) FALSE (default) or TRUE, compute arc distance between two observations
+#' @param is_mile (optional) TRUE (default) or FALSE, convert distance unit from mile to km.
+#' @return An instance of Weight-class
+#' @examples
+#' library(sf)
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- st_read(guerry_path)
+#' bandwidth <- min_distthreshold(guerry)
+#' kernel_w <- kernel_weights(guerry, bandwidth, kernel_method = "uniform")
+#' summary(kernel_w)
+#' @export
+kernel_weights <- function(sf_obj, bandwidth, kernel_method,
+                           use_kernel_diagonals = FALSE, power = 1.0, is_inverse = FALSE,
+                           is_arc = FALSE, is_mile = TRUE) {
+  geoda_obj <- getGeoDaObj(sf_obj)
+  return (gda_kernel_weights(geoda_obj, bandwidth, kernel_method, use_kernel_diagonals,
+                             power, is_inverse, is_arc, is_mile))
+}
+
+#################################################################
+#' @title K-Nearest Neighbors-based Spatial Weights
+#' @description Create a k-nearest neighbors based spatial weights
+#' @keywords weights knn
+#' @param sf_obj An sf (simple feature) object
+#' @param k a positive integer number for k-nearest neighbors
+#' @param is_inverse (optional) FALSE (default) or TRUE, apply inverse on distance value
+#' @param power (optional) The power (or exponent) of a number says how many times to use the number in a multiplication.
+#' @param is_arc (optional) FALSE (default) or TRUE, compute arc distance between two observations
+#' @param is_mile (optional) TRUE (default) or FALSE, convert distance unit from mile to km.
+#' @return An instance of Weight-class
+#' @examples
+#' library(sf)
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- st_read(guerry_path)
+#' knn6_w <- knn_weights(guerry, 6)
+#' summary(knn6_w)
+#' @export
+knn_weights <- function(sf_obj, k, power = 1.0, is_inverse = FALSE,
+                        is_arc = FALSE, is_mile = TRUE) {
+  geoda_obj <- getGeoDaObj(sf_obj)
+  return (gda_knn_weights(geoda_obj, k, power, is_inverse, is_arc, is_mile))
+}
+
+#################################################################
+#' @title K-NN Kernel Spatial Weights
+#' @description Create a kernel weights by specifying k-nearest neighbors and a kernel method
+#' @keywords kernel weights knn
+#' @param sf_obj An sf (simple feature) object
+#' @param k a positive integer number for k-nearest neighbors
+#' @param kernel_method a string value, which has to be one of 'triangular', 'uniform', 'epanechnikov', 'quartic', 'gaussian'
+#' @param adaptive_bandwidth (optional) TRUE (default) or FALSE: TRUE use adaptive bandwidth calculated using distance of k-nearest neithbors,
+#' FALSE use max distance of all observation to their k-nearest neighbors
+#' @param use_kernel_diagonals (optional) FALSE (default) or TRUE, apply kernel on the diagonal of weights matrix
+#' @param is_inverse (optional) FALSE (default) or TRUE, apply inverse on distance value
+#' @param power (optional) The power (or exponent) of a number says how many times to use the number in a multiplication.
+#' @param is_arc (optional) FALSE (default) or TRUE, compute arc distance between two observations
+#' @param is_mile (optional) TRUE (default) or FALSE, convert distance unit from mile to km.
+#' @return An instance of Weight-class
+#' @examples
+#' library(sf)
+#' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
+#' guerry <- st_read(guerry_path)
+#' adptkernel_w = kernel_knn_weights(guerry, 6, "uniform")
+#' summary(adptkernel_w)
+#' @export
+kernel_knn_weights <- function(sf_obj, k, kernel_method, adaptive_bandwidth = TRUE,
+                               use_kernel_diagonals = FALSE, power = 1.0, is_inverse = FALSE,
+                               is_arc = FALSE, is_mile = TRUE ){
+  geoda_obj <- getGeoDaObj(sf_obj)
+  return (gda_kernel_knn_weights(geoda_obj, k, kernel_method, adaptive_bandwidth, use_kernel_diagonals,
+                                 power, is_inverse, is_arc, is_mile))
+}
+
+#################################################################
+# THE FOLLOWING FUNCTIONS ARE FOR INTERNALLY USE AND TEST ONLY
+#################################################################
+#' @title (For internally use and test only) Queen Contiguity Spatial Weights
 #' @description Create a Queen contiguity weights with options of "order", "include lower order" and "precision threshold"
 #' @param geoda_obj An object of [geoda] class
 #' @param order  (Optional) Order of contiguity
@@ -295,10 +509,10 @@ min_distthreshold <- function(geoda_obj, is_arc = FALSE, is_mile = TRUE) {
 #' @examples
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
 #' guerry <- geoda_open(guerry_path)
-#' queen_w <- queen_weights(guerry)
+#' queen_w <- gda_queen_weights(guerry)
 #' summary(queen_w)
 #' @export
-queen_weights <- function(geoda_obj, order=1, include_lower_order = FALSE, precision_threshold = 0) {
+gda_queen_weights <- function(geoda_obj, order=1, include_lower_order = FALSE, precision_threshold = 0) {
 
   # test if gda object works
   if (geoda_obj$GetNumObs() <=0) {
@@ -319,8 +533,9 @@ queen_weights <- function(geoda_obj, order=1, include_lower_order = FALSE, preci
   return(Weight$new(p_GeoDaWeight(w)))
 }
 
+
 #################################################################
-#' @title Rook Contiguity Spatial Weights
+#' @title (For internally use and test only) Rook Contiguity Spatial Weights
 #' @description Create a Rook contiguity weights with options of "order", "include lower order" and "precision threshold"
 #' @param geoda_obj An object of [geoda] class
 #' @param order  (Optional) Order of contiguity
@@ -330,10 +545,10 @@ queen_weights <- function(geoda_obj, order=1, include_lower_order = FALSE, preci
 #' @examples
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
 #' guerry <- geoda_open(guerry_path)
-#' rook_w <- rook_weights(guerry)
+#' rook_w <- gda_rook_weights(guerry)
 #' summary(rook_w)
 #' @export
-rook_weights <- function(geoda_obj, order = 1, include_lower_order = FALSE, precision_threshold = 0) {
+gda_rook_weights <- function(geoda_obj, order = 1, include_lower_order = FALSE, precision_threshold = 0) {
 
   # test if gda object works
   if (geoda_obj$GetNumObs() <=0) {
@@ -354,7 +569,20 @@ rook_weights <- function(geoda_obj, order = 1, include_lower_order = FALSE, prec
 }
 
 #################################################################
-#' @title Distance-based Spatial Weights
+#' @title (For internally use and test only) Minimum Distance Threshold for Distance-based Weights
+#' @description Get minimum threshold of distance that makes sure each observation has at least one neighbor
+#' @param geoda_obj An instance of geoda-class
+#' @param is_arc (optional) FALSE (default) or TRUE, compute arc distance between two observations
+#' @param is_mile (optional) TRUE (default) or FALSE, if 'is_arc' option is TRUE, then 'is_mile' will set distance unit to 'mile' or 'km'.
+#' @return A numeric value of minimum threshold of distance
+#' @export
+gda_min_distthreshold <- function(geoda_obj, is_arc = FALSE, is_mile = TRUE) {
+  return (p_gda_min_distthreshold(geoda_obj$GetPointer(), is_arc, is_mile))
+}
+
+
+#################################################################
+#' @title (For internally use and test only) Distance-based Spatial Weights
 #' @description Create a distance-based weights
 #' @keywords distance weights
 #' @param geoda_obj An instance of geoda-class
@@ -367,11 +595,11 @@ rook_weights <- function(geoda_obj, order = 1, include_lower_order = FALSE, prec
 #' @examples
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
 #' guerry <- geoda_open(guerry_path)
-#' dist_thres <- min_distthreshold(guerry)
-#' dist_w <- distance_weights(guerry, dist_thres)
+#' dist_thres <- gda_min_distthreshold(guerry)
+#' dist_w <- gda_distance_weights(guerry, dist_thres)
 #' summary(dist_w)
 #' @export
-distance_weights <- function(geoda_obj, dist_thres, power = 1.0, is_inverse = FALSE, is_arc = FALSE, is_mile=TRUE){
+gda_distance_weights <- function(geoda_obj, dist_thres, power = 1.0, is_inverse = FALSE, is_arc = FALSE, is_mile=TRUE){
 
   # test if gda object works
   if (geoda_obj$GetNumObs() <=0) {
@@ -388,7 +616,7 @@ distance_weights <- function(geoda_obj, dist_thres, power = 1.0, is_inverse = FA
 }
 
 #################################################################
-#' @title Distance-based Kernel Spatial Weights
+#' @title (For internally use and test only) Distance-based Kernel Spatial Weights
 #' @description Create a kernel weights by specifying a bandwidth and a kernel method
 #' @keywords kernel weights
 #' @param geoda_obj An instance of geoda-class
@@ -403,11 +631,11 @@ distance_weights <- function(geoda_obj, dist_thres, power = 1.0, is_inverse = FA
 #' @examples
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
 #' guerry <- geoda_open(guerry_path)
-#' bandwidth <- min_distthreshold(guerry)
-#' kernel_w <- kernel_weights(guerry, bandwidth, kernel_method = "uniform")
+#' bandwidth <- gda_min_distthreshold(guerry)
+#' kernel_w <- gda_kernel_weights(guerry, bandwidth, kernel_method = "uniform")
 #' summary(kernel_w)
 #' @export
-kernel_weights <- function(geoda_obj, bandwidth, kernel_method,
+gda_kernel_weights <- function(geoda_obj, bandwidth, kernel_method,
                            use_kernel_diagonals = FALSE, power = 1.0, is_inverse = FALSE,
                            is_arc = FALSE, is_mile = TRUE) {
 
@@ -430,7 +658,7 @@ kernel_weights <- function(geoda_obj, bandwidth, kernel_method,
 }
 
 #################################################################
-#' @title K-Nearest Neighbors-based Spatial Weights
+#' @title (For internally use and test only) K-Nearest Neighbors-based Spatial Weights
 #' @description Create a k-nearest neighbors based spatial weights
 #' @keywords weights knn
 #' @param geoda_obj An instance of geoda
@@ -443,10 +671,10 @@ kernel_weights <- function(geoda_obj, bandwidth, kernel_method,
 #' @examples
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
 #' guerry <- geoda_open(guerry_path)
-#' knn6_w <- knn_weights(guerry, 6)
+#' knn6_w <- gda_knn_weights(guerry, 6)
 #' summary(knn6_w)
 #' @export
-knn_weights <- function(geoda_obj, k, power = 1.0, is_inverse = FALSE,
+gda_knn_weights <- function(geoda_obj, k, power = 1.0, is_inverse = FALSE,
                         is_arc = FALSE, is_mile = TRUE) {
 
   # test if geoda_obj object works
@@ -464,7 +692,7 @@ knn_weights <- function(geoda_obj, k, power = 1.0, is_inverse = FALSE,
 }
 
 #################################################################
-#' @title K-NN Kernel Spatial Weights
+#' @title (For internally use and test only) K-NN Kernel Spatial Weights
 #' @description Create a kernel weights by specifying k-nearest neighbors and a kernel method
 #' @keywords kernel weights knn
 #' @param geoda_obj An instance of geoda
@@ -481,10 +709,10 @@ knn_weights <- function(geoda_obj, k, power = 1.0, is_inverse = FALSE,
 #' @examples
 #' guerry_path <- system.file("extdata", "Guerry.shp", package = "rgeoda")
 #' guerry <- geoda_open(guerry_path)
-#' adptkernel_w = kernel_knn_weights(guerry, 6, "uniform")
+#' adptkernel_w = gda_kernel_knn_weights(guerry, 6, "uniform")
 #' summary(adptkernel_w)
 #' @export
-kernel_knn_weights <- function(geoda_obj, k, kernel_method, adaptive_bandwidth = TRUE,
+gda_kernel_knn_weights <- function(geoda_obj, k, kernel_method, adaptive_bandwidth = TRUE,
                                use_kernel_diagonals = FALSE, power = 1.0, is_inverse = FALSE,
                                is_arc = FALSE, is_mile = TRUE ){
 
