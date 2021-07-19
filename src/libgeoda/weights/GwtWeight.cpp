@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string.h>
 #include <iomanip>
+#include <iostream>
 
 using namespace std;
 
@@ -91,6 +92,16 @@ const std::vector<double> GwtWeight::GetNeighborWeights(int obs_idx)
     return gwt[obs_idx].GetNbrWeights();
 }
 
+void GwtWeight::SetNeighbors(int id, const std::vector<int>& nbr_ids)
+{
+    // not implemented, since GAL will be used to create weights internally 
+}
+
+void GwtWeight::SetNeighborsAndWeights(int id, const std::vector<int>& nbr_ids, const std::vector<double>& w)
+{
+    // not implemented, since GAL will be used to create weights internally 
+}
+
 bool GwtWeight::CheckNeighbor(int obs_idx, int nbr_idx)
 {
     return gwt[obs_idx].Check(nbr_idx);
@@ -139,7 +150,8 @@ void GwtWeight::GetNbrStats()
         nnbrs_array.push_back(n_nbrs);
     }
     //double n_edges = e_dict.size() / 2.0;
-    sparsity = sum_nnbrs / (double)(num_obs * num_obs);
+    //std::cout << sum_nnbrs << "/" << ((double)(num_obs) * num_obs) << std::endl;
+    sparsity = sum_nnbrs / ((double)num_obs * (double)num_obs);
 
     if (num_obs > 0) mean_nbrs = sum_nnbrs / (double)num_obs;
     std::sort(nnbrs_array.begin(), nnbrs_array.end());
@@ -180,7 +192,7 @@ GwtWeight::Save(const char *ofname, const char *layer_name, const char *id_var_n
 }
 
 bool GwtWeight::Save(const char *ofname, const char *layer_name, const char *id_var_name,
-                     const std::vector<const char *> &id_vec) {
+                     const std::vector<std::string> &id_vec) {
     std::ofstream out;
     out.open(ofname);
     if (!(out.is_open() && out.good())) return false;

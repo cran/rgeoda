@@ -13,6 +13,7 @@ public:
 
 	virtual ~GeoDaWeight() {}
 
+	virtual bool   CheckConnectivity();
     virtual bool   CheckNeighbor(int obs_idx, int nbr_idx) = 0;
     virtual const  std::vector<long> GetNeighbors(int obs_idx) = 0;
     virtual const  std::vector<double> GetNeighborWeights(int obs_idx) = 0;
@@ -31,7 +32,12 @@ public:
     virtual bool   Save(const char* ofname,
                               const char* layer_name,
                               const char* id_var_name,
-                              const std::vector<const char*>& id_vec) = 0;
+                              const std::vector<std::string>& id_vec) = 0;
+
+    virtual void SetNeighbors(int id, const std::vector<int>& nbr_ids) = 0;
+
+    virtual void SetNeighborsAndWeights(int id, const std::vector<int>& nbr_ids, const std::vector<double>& w) = 0;
+
     // functions:
     virtual bool   IsSymmetric() const;
     virtual double GetSparsity() const;
@@ -41,6 +47,7 @@ public:
     virtual double GetMedianNbrs() const;
     virtual int    GetNumObs() const;
     virtual bool   IsInternalUse() const { return is_internal_use; }
+    virtual bool   IsMasked(int obs_idx) { return true;}
 
     // Others
     virtual const GeoDaWeight& operator=(const GeoDaWeight& gw);
@@ -52,21 +59,21 @@ public:
     virtual std::string GetUID() const {return uid;}
 
     // Properties
-  enum WeightType { gal_type, gwt_type };
-	WeightType    weight_type;
-	std::string   wflnm; // filename
-  std::string   id_field;
-	std::string   title; // optional title.  Use wflnm if empty
-	bool          symmetry_checked; // indicates validity of is_symmetric bool
+    enum WeightType { gal_type, gwt_type };
+    WeightType    weight_type;
+    std::string   wflnm; // filename
+    std::string   id_field;
+    std::string   title; // optional title.  Use wflnm if empty
+    bool          symmetry_checked; // indicates validity of is_symmetric bool
 	bool          is_symmetric; // true iff matrix is symmetric
 	int           num_obs;
-  double        sparsity; // % non-zeros
-  int        min_nbrs;
-  int        max_nbrs;
-  double     mean_nbrs;
-  double     median_nbrs;
-  bool       is_internal_use; // if internally used weights structure, will not be shown and used by users
-  std::string uid;
+    double        sparsity; // % non-zeros
+    int        min_nbrs;
+    int        max_nbrs;
+    double     mean_nbrs;
+    double     median_nbrs;
+    bool       is_internal_use; // if internally used weights structure, will not be shown and used by users
+    std::string uid;
 };
 
 namespace WeightUtils {

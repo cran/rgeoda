@@ -50,7 +50,7 @@ UniGeary::~UniGeary() {
 
 void UniGeary::ComputeLoalSA() {
     for (int i=0; i<num_obs; i++) {
-        if (undefs[i]) {
+        if (undefs[i] || weights->IsMasked(i)==false) {
             lag_vec[i] = 0;
             lisa_vec[i] = 0;
             cluster_vec[i] = CLUSTER_UNDEFINED;
@@ -114,6 +114,37 @@ void UniGeary::PermLocalSA(int cnt, int perm, const std::vector<int> &permNeighb
     permutedSA[perm] = localGearyPermuted;
 }
 
+void UniGeary::PermLocalSA(int cnt, int perm, int numNeighbors, const int* permNeighbors,
+        std::vector<double>& permutedSA)
+{
+    int validNeighbors = 0;
+    double permutedLag = 0;
+    double permutedLagSquare = 0;
+
+    // use permutation to compute the lag
+    // compute the lag for binary weights
+    for (int cp=0; cp<numNeighbors; cp++) {
+        int nb = permNeighbors[cp];
+        if (nb >= cnt) nb = nb + 1;
+        if (!undefs[nb]) {
+            permutedLag += data[nb];
+            permutedLagSquare += data_square[nb];
+            validNeighbors ++;
+        }
+    }
+
+    //NOTE: we shouldn't have to row-standardize or
+    // multiply by data1[cnt]
+    if (validNeighbors > 0 && row_standardize) {
+        permutedLag /= validNeighbors;
+        permutedLagSquare /= validNeighbors;
+
+    }
+
+    const double localGearyPermuted = data_square[cnt] - 2.0 * data[cnt] * permutedLag + permutedLagSquare;
+    permutedSA[perm] = localGearyPermuted;
+}
+
 uint64_t UniGeary::CountLargerSA(int cnt, const std::vector<double>& permutedSA)
 {
     double permGearySum = 0, permGearyMean = 0;
@@ -132,8 +163,9 @@ uint64_t UniGeary::CountLargerSA(int cnt, const std::vector<double>& permutedSA)
             // positive HH cluster_vec[cnt] == 1CLUSTER_HIGHHIGH
             // positive LL cluster_vec[cnt] == 2CLUSTER_LOWLOW
             // positive && but in outlier qudrant: other pos
-            if ((const unsigned long)cluster_vec[cnt] > CLUSTER_LOWLOW && (const unsigned long)cluster_vec[cnt] <
-            CLUSTER_UNDEFINED) {
+            if ((const unsigned long)cluster_vec[cnt] > CLUSTER_LOWLOW &&
+                (const unsigned long)cluster_vec[cnt] < CLUSTER_UNDEFINED)
+            {
                 cluster_vec[cnt] = CLUSTER_OTHERPOS;
             }
         }

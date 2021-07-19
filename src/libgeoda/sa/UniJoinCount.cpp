@@ -42,7 +42,7 @@ UniJoinCount::~UniJoinCount() {
 
 void UniJoinCount::ComputeLoalSA() {
     for (int i=0; i<num_obs; i++) {
-        if (undefs[i]) {
+        if (undefs[i] || weights->IsMasked(i) == false) {
             lag_vec[i] = 0;
             lisa_vec[i] = 0;
             cluster_vec[i] = CLUSTER_UNDEFINED;
@@ -77,7 +77,7 @@ void UniJoinCount::CalcPseudoP_range(int obs_start, int obs_end, uint64_t seed_s
 #endif
 
     for (int cnt=obs_start; cnt<=obs_end; cnt++) {
-        if (undefs[cnt]) {
+        if (undefs[cnt] || weights->IsMasked(cnt) == false) {
             sig_cat_vec[cnt] = 6; // undefined
             continue;
         }
@@ -95,6 +95,7 @@ void UniJoinCount::CalcPseudoP_range(int obs_start, int obs_end, uint64_t seed_s
             continue;
         }
 
+        int countLarger = 0;
 #ifdef __JSGEODA__
         if (using_cache == false) {
             for (size_t perm = 0; perm < permutations; perm++) {
@@ -113,21 +114,36 @@ void UniJoinCount::CalcPseudoP_range(int obs_start, int obs_end, uint64_t seed_s
                     }
                 }
                 std::vector<int> permNeighbors(numNeighbors);
-                for (int cp = 0; cp < numNeighbors; cp++) {
-                    permNeighbors[cp] = workPermutation.Pop();
+                double perm_jc = 0;
+                // use permutation to compute the lags
+                for (int cp=0; cp<numNeighbors; cp++) {
+                    int perm_idx = workPermutation.Pop();
+                    perm_jc += data[perm_idx];
+                    permNeighbors[cp] = perm_idx;
+                }
+                // binary weights
+                if (perm_jc >= lisa_vec[cnt]) {
+                    countLarger++;
                 }
                 cache.push_back(permNeighbors);
-                PermLocalSA(cnt, perm, permNeighbors, permutedSA);
-
             }
         } else {
             for (size_t perm = 0; perm < permutations; perm++) {
-                PermLocalSA(cnt, perm, cache[perm], permutedSA);
+                double perm_jc = 0;
+                // use permutation to compute the lags
+                for (int cp=0; cp<numNeighbors; cp++) {
+                    int perm_idx = cache[perm][cp];
+                    perm_jc += data[perm_idx];
+                }
+
+                // binary weights
+                if (perm_jc >= lisa_vec[cnt]) {
+                    countLarger++;
+                }
             }
         }
 #else
 
-        int countLarger = 0;
         for (int perm=0; perm<permutations; perm++) {
             int rand=0, newRandom;
             double rng_val;
@@ -182,7 +198,7 @@ void UniJoinCount::CalcPseudoP_range(int obs_start, int obs_end, uint64_t seed_s
 void UniJoinCount::PermCalcPseudoP_range(int obs_start, int obs_end, uint64_t seed_start)
 {
     for (int cnt=obs_start; cnt<=obs_end; cnt++) {
-        if (undefs[cnt]) {
+        if (undefs[cnt] || weights->IsMasked(cnt) == false) {
             sig_cat_vec[cnt] = 6; // undefined
             continue;
         }

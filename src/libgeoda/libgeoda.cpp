@@ -347,14 +347,14 @@ const std::vector<gda::PointContents*>& GeoDa::GetCentroids()
 {
     // copy centroid from OGRGeometry
    if (centroids.empty()) {
-       if (this->GetMapType() == gda::POINT_TYP) {
+       if (main_map->shape_type == gda::POINT_TYP) {
            this->centroids.resize(this->GetNumObs());
            for (size_t i=0; i<this->centroids.size(); ++i) {
                this->centroids[i] = new gda::PointContents;
                this->centroids[i]->x = ((gda::PointContents*)(this->main_map->records[i]))->x;
                this->centroids[i]->y = ((gda::PointContents*)(this->main_map->records[i]))->y;
            }
-       } else if (this->GetMapType() == gda::POLYGON) {
+       } else if (main_map->shape_type == gda::POLYGON) {
            this->centroids.resize(this->GetNumObs());
            for (size_t i=0; i<this->centroids.size(); ++i) {
                gda::PolygonContents* poly = (gda::PolygonContents*)this->main_map->records[i];
@@ -502,6 +502,19 @@ int GeoDa::GetMapType()
     return main_map->shape_type;
 }
 
+std::string GeoDa::GetMapTypeName()
+{
+    if (main_map->shape_type == gda::POLYGON || main_map->shape_type == gda::POLYGON_Z || main_map->shape_type == gda::POLYGON_M) {
+        return "Polygon";
+    } else if (main_map->shape_type == gda::POINT_TYP || main_map->shape_type == gda::MULTI_POINT || main_map->shape_type == gda::POINT_Z || main_map->shape_type == gda::POINT_M || main_map->shape_type == gda::MULTI_POINT_Z) {
+        return "Point";
+    } else if (main_map->shape_type == gda::POLY_LINE || main_map->shape_type == gda::POLY_LINE_Z || main_map->shape_type == gda::POLY_LINE_M ) {
+        return "Line";
+    } else {
+        return "Unknown";
+    }
+}
+
 void GeoDa::ReadDbffile(const char* fpath)
 {
     DBFHandle hDBF = DBFOpen(fpath, "rb");
@@ -553,7 +566,7 @@ void GeoDa::ReadShapefile(const char* fpath)
 {
 
 
-    SHPHandle hSHP = SHPOpen(fpath, "rb" );
+    SHPHandle hSHP = SHPOpenEx(fpath, "rb" );
     if( hSHP == NULL ) {
         // unable to open, throw error
         return;

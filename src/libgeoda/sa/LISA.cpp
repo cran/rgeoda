@@ -273,7 +273,24 @@ void LISA::CalcPseudoP()
     if (!calc_significances) return;
 
 #ifdef __NO_THREAD__
-    CalcPseudoP_range(0, num_obs-1, last_seed_used);
+    if (boost::iequals(permutation_method, "complete")) {
+        CalcPseudoP_range(0, num_obs - 1, last_seed_used);
+    } else {
+        // Init permutation table
+        if (perm_table != 0){
+            for (int i=0; i<permutations; ++i) {
+                delete[] perm_table[i];
+            }
+            delete[] perm_table;
+        }
+        int max_neighbors = weights->GetMaxNbrs();
+        perm_table = new int*[permutations];
+        for (int i=0; i<permutations; ++i) {
+            perm_table[i] = new int[max_neighbors];
+        }
+        PermCreateRange(0, permutations-1, max_neighbors, last_seed_used);
+        PermCalcPseudoP_range(0, num_obs-1, last_seed_used);
+    }
 #ifdef __JSGEODA__
     if (has_cached_perm[weights->GetUID()] == false) {
         has_cached_perm[weights->GetUID()] = true;
@@ -362,6 +379,8 @@ void LISA::PermCreateTable_threaded()
 
 void LISA::PermCreateRange(int perm_start, int perm_end, int max_neighbors, uint64_t seed_start)
 {
+
+
     GeoDaSet *workPermutation = new GeoDaSet(num_obs);
     int max_rand = num_obs-2; // when one observation is always removed
     double rng_val;
@@ -443,7 +462,7 @@ void LISA::PermCalcPseudoP_threaded()
 void LISA::PermCalcPseudoP_range(int obs_start, int obs_end, uint64_t seed_start)
 {
     for (int cnt=obs_start; cnt<=obs_end; cnt++) {
-        if (undefs[cnt]) {
+        if (undefs[cnt] || weights->IsMasked(cnt) == false) {
             sig_cat_vec[cnt] = 6; // undefined
             continue;
         }
@@ -549,7 +568,7 @@ void LISA::CalcPseudoP_range(int obs_start, int obs_end, uint64_t seed_start)
 #endif
 
     for (int cnt=obs_start; cnt<=obs_end; cnt++) {
-        if (undefs[cnt]) {
+        if (undefs[cnt] || weights->IsMasked(cnt) == false) {
             sig_cat_vec[cnt] = 6; // undefined
             continue;
         }

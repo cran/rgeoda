@@ -9,16 +9,18 @@
 class GalElement {
 public:
 	GalElement();
-	void SetSizeNbrs(size_t sz, bool is_gal=false);
+
+    virtual long Size() const { return nbr.size(); }
+    virtual const std::vector<long>& GetNbrs() const;
+    virtual long operator[](size_t n) const { return nbr[n]; }
+
+    void SetSizeNbrs(size_t sz, bool is_gal=false);
 	void SetNbr(size_t pos, long n);
 	void SetNbr(size_t pos, long n, double w);
 	void SetNbrs(const GalElement& gal);
-	const std::vector<long>& GetNbrs() const;
 	const std::vector<double>& GetNbrWeights() const;
 	void SortNbrs();
     void ReverseNbrs();
-	long Size() const { return nbr.size(); }
-	long operator[](size_t n) const { return nbr[n]; }
 	double SpatialLag(const std::vector<double>& x) const;
 	double SpatialLag(const double* x) const;
 	double SpatialLag(const std::vector<double>& x, const int* perm) const;
@@ -41,9 +43,11 @@ private:
 class GalWeight : public GeoDaWeight {
 public:
 	GalElement* gal;
-    
+
 	GalWeight() : gal(0) { weight_type = gal_type; }
-    
+
+	GalWeight(int num_obs);
+
 	GalWeight(const GalWeight& gw);
     
 	virtual ~GalWeight() { if (gal) delete [] gal; gal = 0; }
@@ -51,7 +55,7 @@ public:
 	static bool HasIsolates(GalElement *gal, int num_obs);
     
 	virtual GalWeight& operator=(const GalWeight& gw);
-    
+
 	virtual bool HasIsolates() { return HasIsolates(gal, num_obs); }
     
     virtual void Update(const std::vector<bool>& undefs);
@@ -63,7 +67,7 @@ public:
     virtual const  std::vector<double> GetNeighborWeights(int obs_idx);
 
     virtual void GetNbrStats();
-    
+
     virtual int GetNbrSize(int obs_idx);
     
     virtual double SpatialLag(int obs_idx,
@@ -76,7 +80,11 @@ public:
     virtual bool   Save(const char* ofname,
                               const char* layer_name,
                               const char* id_var_name,
-                              const std::vector<const char*>& id_vec);
+                              const std::vector<std::string>& id_vec);
+
+    virtual void SetNeighbors(int id, const std::vector<int>& nbr_ids);
+
+    virtual void SetNeighborsAndWeights(int id, const std::vector<int>& nbr_ids, const std::vector<double>& w);
 };
 
 namespace Gda {

@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string.h>
 #include <iomanip>
+#include <iostream>
 #include <boost/unordered_map.hpp>
 
 #ifdef _WIN32
@@ -216,6 +217,20 @@ GalWeight::GalWeight(const GalWeight& gw)
 	GalWeight::operator=(gw);
 }
 
+GalWeight::GalWeight(int num_obs)
+: GeoDaWeight()
+{
+    this->num_obs = num_obs;
+    gal = new GalElement[num_obs];
+
+    this->sparsity = 0;
+    this->min_nbrs = 0;
+    this->max_nbrs = 0;
+    this->mean_nbrs = 0;
+    this->median_nbrs= 0;
+    this->is_internal_use = true;
+}
+
 GalWeight& GalWeight::operator=(const GalWeight& gw)
 {
 	GeoDaWeight::operator=(gw);
@@ -230,6 +245,54 @@ GalWeight& GalWeight::operator=(const GalWeight& gw)
     this->id_field = gw.id_field;
 
 	return *this;
+}
+
+void GalWeight::SetNeighbors(int id, const std::vector<int>& nbr_ids)
+{
+    if (id < 0 || id >= this->num_obs) {
+        return;
+    }
+
+    int num_nbrs = nbr_ids.size();
+
+    if (num_nbrs <= 0 || num_nbrs > num_obs -1) {
+        return;
+    }
+
+    this->gal[id].SetSizeNbrs(num_nbrs, true);
+
+    for (int i=0; i<num_nbrs; ++i) {
+        if (nbr_ids[i] < 0 || nbr_ids[i] > num_obs-1 || nbr_ids[i] == id) {
+            continue;
+        }
+        this->gal[id].SetNbr(i, nbr_ids[i]);
+    }
+}
+
+void GalWeight::SetNeighborsAndWeights(int id, const std::vector<int>& nbr_ids, const std::vector<double>& w)
+{
+    if (id < 0 || id >= this->num_obs) {
+        return;
+    }
+
+    int num_nbrs = nbr_ids.size();
+
+    if (num_nbrs <= 0 || num_nbrs > num_obs -1) {
+        return;
+    }
+
+    this->gal[id].SetSizeNbrs(num_nbrs, w.empty());
+
+    for (int i=0; i<num_nbrs; ++i) {
+        if (nbr_ids[i] < 0 || nbr_ids[i] > num_obs-1 || nbr_ids[i] == id) {
+            continue;
+        }
+        if (w.empty()) {
+            this->gal[id].SetNbr(i, nbr_ids[i]);
+        } else {
+            this->gal[id].SetNbr(i, nbr_ids[i], w[i]);
+        }
+    }
 }
 
 void GalWeight::Update(const std::vector<bool>& undefs)
@@ -287,6 +350,7 @@ void GalWeight::GetNbrStats()
         nnbrs_array.push_back(n_nbrs);
     }
     //double n_edges = e_dict.size() / 2.0;
+    //std::cout << sum_nnbrs << "/" << (double)(num_obs * num_obs) << std::endl;
     sparsity = sum_nnbrs / (double)(num_obs * num_obs);
 
     if (num_obs > 0) mean_nbrs = sum_nnbrs / (double)num_obs;
@@ -349,7 +413,7 @@ bool GalWeight::Save(const char* ofname,
 bool GalWeight::Save(const char* ofname,
                      const char* layer_name,
                      const char* id_var_name,
-                     const std::vector<const char*>& id_vec)
+                     const std::vector<std::string>& id_vec)
 {
     std::ofstream out;
     out.open(ofname);
@@ -433,7 +497,7 @@ GalElement* Gda::GetGalElement(GeoDaWeight* w)
     if (w->weight_type == GeoDaWeight::gal_type) {
         GalWeight *gal_w = dynamic_cast<GalWeight *>(w);
         gal = gal_w->gal;
-    } else {
+    } else if (w->weight_type == GeoDaWeight::gwt_type) {
         GwtWeight *gwt_w = dynamic_cast<GwtWeight *>(w);
         GwtElement *gwt = gwt_w->gwt;
         gal = Gda::Gwt2Gal(gwt, gwt_w->num_obs);
