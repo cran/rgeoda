@@ -1,8 +1,8 @@
 Package: rgeoda
 Type: Package
 Title: R Library for Spatial Data Analysis
-Version: 0.0.8-4
-Date: 2021-08-04
+Version: 0.0.8-6
+Date: 2021-09-07
 Authors@R: 
     c(person(given = "Xun", family = "Li", email="lixun910@gmail.com", role=c("aut","cre")),
       person(given = "Luc", family = "Anselin", email="anselin@uchicago.edu", role="aut"))
@@ -25,8 +25,8 @@ Encoding: UTF-8
 Suggests: wkb, sp
 SystemRequirements: C++14
 NeedsCompilation: yes
-Packaged: 2021-08-05 17:11:46 UTC; xun
+Packaged: 2021-09-08 18:28:08 UTC; xun
 Author: Xun Li [aut, cre],
   Luc Anselin [aut]
 Repository: CRAN
-Date/Publication: 2021-08-05 21:30:02 UTC
+Date/Publication: 2021-09-08 20:20:02 UTC
