@@ -1,7 +1,7 @@
-a89831104ba7dcf842de5b3c93ba31bc *DESCRIPTION
+983d57749525fa7bc44a93cef656b71e *DESCRIPTION
 714f2fd208f1398d884cb136a0a7d580 *NAMESPACE
 ca57e02f810b762e9f3196fa1b1a677e *R/RcppExports.R
-4d526a67f586466f35892948799817c0 *R/clustering.R
+a233425a4e552cfde85e452bf23cb634 *R/clustering.R
 8e82deabd7781e1272cecf5573903c39 *R/init.R
 98c5f0dc36cdaeaa675fff467154d6c8 *R/lisa.R
 77e8464444d4e4b419e67733390fc478 *R/read_geoda.R
@@ -91,7 +91,7 @@ fed32206ce642f6d3521179861b911b8 *man/read_swm.Rd
 9b6a32b6d8b416899b73b0606a77c047 *man/set_neighbors.Rd
 bf41f51430d428f067986d48319daf43 *man/set_neighbors_with_weights.Rd
 1917c419115103b71c9caa102929278d *man/sf_to_geoda.Rd
-ec9cce2baffc2111df8b7e54e0be923d *man/skater.Rd
+c2342b1d5042e155cc22b97a64d1889f *man/skater.Rd
 7b91244f9577f983a980fe9aacdd8c32 *man/sp_to_geoda.Rd
 394764299779a5e507698631a60dd079 *man/spatial_lag.Rd
 ad49d22f88333902295514eb7fa02ae3 *man/spatial_validation.Rd
@@ -114,7 +114,7 @@ cc887090620363941feedd417b18c321 *src/libgeoda/GenUtils.cpp
 9613e05806d4d9b8ea34b15692007446 *src/libgeoda/SpatialIndTypes.h
 1eccec8bc364ab181dbad3bf2b605046 *src/libgeoda/clustering/DorlingCartogram.cpp
 b774e37a5ed9fb2337a4670b7cda4ed8 *src/libgeoda/clustering/DorlingCartogram.h
-5d212ead7b35bd538d70c61a1367032f *src/libgeoda/clustering/azp.cpp
+98b4dbaf64489a461d67e1715138b521 *src/libgeoda/clustering/azp.cpp
 9dc1d326fe61f2ea85291be541a672dd *src/libgeoda/clustering/azp.h
 ef5a39039e1d50d10ecceb39d06dd642 *src/libgeoda/clustering/azp_wrapper.cpp
 eed6371f14fa8bda6515f57b4a56561a *src/libgeoda/clustering/azp_wrapper.h
@@ -128,7 +128,7 @@ cca3735405dfc19ebd1dc1c21458c67b *src/libgeoda/clustering/joincount_ratio.cpp
 730863fa14db44aff143a745928a157e *src/libgeoda/clustering/make_spatial.h
 f0a84f7e85304e43c7d243d91b86c7ef *src/libgeoda/clustering/maxp_wrapper.cpp
 43da3ce1d463249a7dd4c0cd5260ded2 *src/libgeoda/clustering/maxp_wrapper.h
-4354178670d8a3af1051d83921611f6a *src/libgeoda/clustering/pam.cpp
+3fab1ec03f5a738936ee5b238e53bd79 *src/libgeoda/clustering/pam.cpp
 fccf193c0cf79b709fdd082df513c513 *src/libgeoda/clustering/pam.h
 b2e44d719bdc1573591b22f915fee412 *src/libgeoda/clustering/pam_wrapper.cpp
 7e7951ff042190d7c2ad6bc66755552d *src/libgeoda/clustering/pam_wrapper.h
@@ -183,7 +183,7 @@ f52f1272ab6a86aaf72d4e5ffd085048 *src/libgeoda/pg/config.h
 a43abd7baaeb3bb18decbcd067c8eb7c *src/libgeoda/pg/geoms.h
 b342a7b99d1911720ab624b073d4a356 *src/libgeoda/pg/utils.cpp
 e090499109f9aabb6055a8dda7435cda *src/libgeoda/pg/utils.h
-d51b55702e68fa598fcd7f3b70603fea *src/libgeoda/rng.h
+cfd395e26245fef7fb1ad3aec01c5b7a *src/libgeoda/rng.h
 ef87738134d6e7fd1c09aa74d9ddccb0 *src/libgeoda/sa/BatchLISA.cpp
 19995675f27da743efd93be3fa1db7de *src/libgeoda/sa/BatchLISA.h
 989d41b038b07c69983cd6efb340ff7a *src/libgeoda/sa/BatchLocalMoran.cpp
@@ -238,7 +238,7 @@ dc2f9a66fd1b87d9fee1b154605d293f *src/libgeoda/weights/PointsToContigWeights.cpp
 4e6fd910c2417a590fdbee2d69cb0969 *src/libgeoda/weights/PolysToContigWeights.h
 264cbb549e5160ac057a1921903b23d5 *src/libgeoda/weights/VoronoiUtils.cpp
 099b1be4b253a188717c1a943315f8e8 *src/libgeoda/weights/VoronoiUtils.h
-3106ae219b67c52bb1b49ac8381ec7b3 *src/rcpp_clustering.cpp
+de3ef110810b1d9646f926a3aff6696d *src/rcpp_clustering.cpp
 6fb3647a92313b6ffa1b3ab432831a1a *src/rcpp_lisa.cpp
 e53e51d7dbe13c29eccbf47181f19f1a *src/rcpp_rgeoda.cpp
 dcc5742b4cd4f93ca92d4b929e2e753f *src/rcpp_utils.cpp
