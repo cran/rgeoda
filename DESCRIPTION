@@ -1,8 +1,8 @@
 Package: rgeoda
 Type: Package
 Title: R Library for Spatial Data Analysis
-Version: 0.0.10-4
-Date: 2023-07-01
+Version: 0.0.11-1
+Date: 2024-12-18
 Authors@R: 
     c(person(given = "Xun", family = "Li", email="lixun910@gmail.com", role=c("aut","cre")),
       person(given = "Luc", family = "Anselin", email="anselin@uchicago.edu", role="aut"))
@@ -19,14 +19,14 @@ License: GPL (>= 2)
 Collate: init.R rgeoda.R sf_geoda.R RcppExports.R read_geoda.R
         weights.R utils.R lisa.R clustering.R
 Imports: sf, Rcpp (>= 1.0.1)
-LinkingTo: Rcpp, BH
-RoxygenNote: 7.1.1
+LinkingTo: Rcpp, BH (>= 1.87.0-1)
+RoxygenNote: 7.3.2
 Encoding: UTF-8
 Suggests: wkb, sp
 SystemRequirements: C++17
 NeedsCompilation: yes
-Packaged: 2023-07-01 18:45:47 UTC; xun
+Packaged: 2024-12-18 17:46:04 UTC; xun
 Author: Xun Li [aut, cre],
   Luc Anselin [aut]
 Repository: CRAN
-Date/Publication: 2023-07-01 20:00:02 UTC
+Date/Publication: 2024-12-19 08:30:02 UTC
