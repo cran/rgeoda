@@ -10,7 +10,12 @@
 #include "../pg/geoms.h"
 #endif
 
-#include <cstdint>
+#include <cstdint>  // C++ header - for std:: namespace
+
+#if defined(__MUSL__) && !defined(__UINT64_TYPE__) && !defined(uint64_t)
+typedef unsigned long long uint64_t;
+#endif
+
 #include <list>
 #include <string>
 
